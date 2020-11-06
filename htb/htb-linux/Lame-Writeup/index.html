@@ -65,46 +65,43 @@ document.addEventListener('DOMContentLoaded', function () {
 <h1 id="-v2">-</h1>
 <h1 id="OSCP-BATTLE">[ OSCP BATTLE ]</h1>
 <ul>
-<li><a href="/xie-zai-kai-shi">写在开始</a></li>
+<li><a href="/oscp/At-The-Beginning">写在开始</a></li>
 </ul>
 <h2 id="Prepration">Prepration</h2>
 <ul>
-<li><a href="/2020/11/04/KALI-Deploy">KALI Deploy</a></li>
+<li><a href="/oscp/KALI-Deploy">KALI Deploy</a></li>
 </ul>
 <h2 id="Note">Note</h2>
 <ul>
-<li><a href="/recon">recon</a></li>
+<li><a href="/">recon</a></li>
 </ul>
 <h1 id="-v3">-</h1>
-<h1 id="Hack-the-box-Writeup">[ Hack-the-box Writeup ]</h1>
+<h1 id="Hack-The-Box-Writeup">[ Hack The Box Writeup ]</h1>
 <ul>
-<li><a href="/2020/11/04/HTB-Env">HTB Env</a></li>
+<li><a href="/htb/HTB-Environment">HTB Environment</a></li>
 </ul>
 <h2 id="HTB-Linux">HTB Linux</h2>
 <ul>
-<li><a href="/2020/11/04/Lame-Writeup">Lame Writeup</a></li>
+<li><a href="/htb/htb-linux/Lame-Writeup">Lame Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
-<li><a href="/plain">nothing here</a></li>
+<li><a href="/">nothing here</a></li>
 </ul>
 <h1 id="-v4">-</h1>
 <h1 id="Cyber-Security">[ Cyber Security ]</h1>
 <h2 id="Skills">Skills</h2>
 <ul>
-<li><a href="/skills">skills</a></li>
+<li><a href="/">skills</a></li>
 </ul>
 <h2 id="Analize">Analize</h2>
 <ul>
-<li><a href="/vuls">vuls</a></li>
+<li><a href="/">vuls</a></li>
 </ul>
 <h1 id="-v5">-</h1>
-<ul>
-<li></li>
-</ul>
 <h1 id="Essay">[ Essay ]</h1>
 <ul>
-<li><a href="/jin-tian-chi-le-sha">该做题了</a></li>
+<li><a href="/">该做题了</a></li>
 </ul>
 
 </div>
@@ -166,6 +163,20 @@ function sidebar_toggle() {
   <h1 id="Lame-Writeup">Lame Writeup</h1>
 <p><img src="./Lame.png" alt=""></p>
 <hr>
+<h2 id="信息收集">信息收集</h2>
+<p>上来第一件事先扫下开放端口，刚开始先用脚本把全端口跑一遍。</p>
+<p>在目录下新建一个 nmap 文件夹用来放扫描结果，整个渗透过程中可能存在多阶段扫描，很多结果需要分类。</p>
+<p>第一步扫描可以取名为 <code>init.*</code>，放在 <code>nmap/</code> 下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sC -sV -O -p- -oA nmap/init 10.10.10.3</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>-sC</strong>: 会执行默认脚本</li>
+<li><strong>-sV</strong>: 检测开放端口的服务版本</li>
+<li><strong>-O</strong>: 检测操作系统</li>
+<li><strong>-p-</strong>: 1-65535 全端口探测</li>
+<li><strong>-oA</strong>: 输出所有格式的信息并存为 nmap/init.*</li>
+</ul>
+<p>嫌速度慢可以先扫端口，然后根据开放端口扫详细。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nmap -p- 10.10.10.3</span><br><span class="line">nmap -sC -sV -O -p xx,xx,xx -oA nmap/init 10.10.10.3</span><br></pre></td></tr></table></figure>
 
 </div>
 
@@ -207,6 +218,15 @@ function sidebar_toggle() {
     </div>
   </div>
 
+  
+    <div class="divider"></div>
+
+    <div class="link">
+      <a class="category-link" href="/categories/Hack-The-Box/">Hack The Box</a>
+
+      
+    </div>
+    
   
 
   <div class="divider"></div>

@@ -11,7 +11,7 @@
 
     <title>
         
-          阿毛毛の坑
+          HTB Environment - 阿毛毛の坑
         
     </title>
 
@@ -160,9 +160,19 @@ function sidebar_toggle() {
         </div>
         <div class="book-content">
           <div class="book-post">
-  <h1 id="准备开搞">准备开搞</h1>
-<h2 id="不想写-home">不想写 home</h2>
-<h3 id="难顶">难顶</h3>
+  <h1 id="HTB-Environment">HTB Environment</h1>
+<h2 id="1、安装-openvpn">1、安装 openvpn</h2>
+<p>。。。</p>
+<h2 id="2、连接-VPN-进入实验室环境">2、连接 VPN 进入实验室环境</h2>
+<p>启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openvpm amm907.ovpn</span><br></pre></td></tr></table></figure>
+<p><img src="./env1.png" alt=""><br>
+看到 <code>Initialization Sequence Completed</code> 字样说明连接成功。</p>
+<p>然后查看本地 IP</p>
+<pre><code>ip a
+</code></pre>
+<p>可以看到新增的 tun0 内网地址 <code>10.10.14.7</code>，即是实验室环境 ip。</p>
+<p><img src="./env2.png" alt=""></p>
 
 </div>
 
@@ -200,10 +210,19 @@ function sidebar_toggle() {
     <!-- Author title -->
     <div class="author-title">
       <div>amm907</div>
-      <div>2020-11-03</div>
+      <div>2020-11-04</div>
     </div>
   </div>
 
+  
+    <div class="divider"></div>
+
+    <div class="link">
+      <a class="category-link" href="/categories/Hack-The-Box/">Hack The Box</a>
+
+      
+    </div>
+    
   
 
   <div class="divider"></div>
