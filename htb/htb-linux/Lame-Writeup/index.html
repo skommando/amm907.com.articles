@@ -339,6 +339,7 @@ msf 有 exp 可以直接 getshell。</p>
 尝试 <a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/40839">脏牛</a> 和 <a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/5093">CVE-2008–0600</a> 不成功。</p>
 <p>尝试 <a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/8572">CVE-2009-1185</a>。<br>
 下载 exp，传到机器上编译 <code>gcc 1234.c -o 1234</code>，获取 netlink PID <code>cat /proc/net/netlink</code>，执行提权的时候，会运行 <code>/tmp/run</code>（得自己加一个反弹 shell 脚本，命名为 /tmp/run），反弹到 kali 上获取 <code>root-shell</code>。（TODO: 补图）</p>
+<p>还有一个可以用。总共试了5个，2个可用。</p>
 <h2 id="0x03-Catch-The-Flag">0x03 Catch The Flag</h2>
 <p>翻文件，flag 一般在用户个人目录下，最后在 <code>/root/root.txt</code>、<code>/home/makis/user.txt</code> 找到 flag。</p>
 <p><img src="./12.png" alt=""></p>

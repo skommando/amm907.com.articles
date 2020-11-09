@@ -165,8 +165,12 @@ function sidebar_toggle() {
 <h2 id="这里讲下-KALI-安装时基础配置，持续更新">这里讲下 KALI 安装时基础配置，持续更新</h2>
 <h3 id="apt-源相关">apt 源相关</h3>
 <p>。</p>
-<h3 id="补充工具">补充工具</h3>
-<p>。</p>
+<h3 id="安全工具">安全工具</h3>
+<p>自带 <code>MSF5</code>，我们要升级成 <code>MSF6</code>。<br>
+用 <code>msfupdate</code> 更新，被告知不再支持，改用 <code>apt update; apt install metasploit-framework</code>，然而执行一般突然停了，啥也没报，然后 msf 打不开，也没更上，我佛了。</p>
+<p><strong>遇事不决就重装，问题解决。</strong></p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">apt</span> remove metasploit-framework
+<span class="token function">curl</span> https://raw.githubusercontent.com:443/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb <span class="token operator">></span> msfinstall <span class="token operator">&amp;&amp;</span> <span class="token function">chmod</span> <span class="token number">755</span> msfinstall <span class="token operator">&amp;&amp;</span> ./msfinstall</code></pre>
 <h3 id="辅助工具">辅助工具</h3>
 <p>。</p>
 <h3 id="杂七杂八的配置">杂七杂八的配置</h3>
