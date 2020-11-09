@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </ul>
 <h2 id="Note">Note</h2>
 <ul>
-<li><a href="/">recon</a></li>
+<li><a href="/oscp/Nmap-Tips">Nmap Tips</a></li>
 </ul>
 <h1 id="-v3">-</h1>
 <h1 id="Hack-The-Box-Writeup">[ Hack The Box Writeup ]</h1>
@@ -165,14 +165,14 @@ function sidebar_toggle() {
 <p>。。。</p>
 <h2 id="2、连接-VPN-进入实验室环境">2、连接 VPN 进入实验室环境</h2>
 <p>启动</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openvpm amm907.ovpn</span><br></pre></td></tr></table></figure>
-<p><img src="./env1.png" alt=""><br>
+<pre class="language-none"><code class="language-none">openvpm amm907.ovpn</code></pre>
+<p><img src="./1.png" alt=""><br>
 看到 <code>Initialization Sequence Completed</code> 字样说明连接成功。</p>
 <p>然后查看本地 IP</p>
 <pre><code>ip a
 </code></pre>
-<p>可以看到新增的 tun0 内网地址 <code>10.10.14.7</code>，即是实验室环境 ip。</p>
-<p><img src="./env2.png" alt=""></p>
+<p>可以看到新增的 tun0 内网地址 <code>10.10.14.11</code>，即是实验室环境 ip。</p>
+<p><img src="./2.png" alt=""></p>
 
 </div>
 
