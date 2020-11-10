@@ -173,7 +173,7 @@ function sidebar_toggle() {
 <p>上来第一件事先扫下开放端口，刚开始先用脚本把全端口跑一遍。</p>
 <p>在目录下新建一个 nmap 文件夹用来放扫描结果，整个渗透过程中可能存在多阶段扫描，很多结果需要分类。</p>
 <h3 id="1、TCP-Scan">1、TCP Scan</h3>
-<p>第一次扫描 TCP 端口可以取名为 <code>tcp.*</code>，放在 <code>nmap/</code> 下。这里有两种扫法**</p>
+<p>第一次扫描 TCP 端口可以取名为 <code>tcp.*</code>，放在 <code>nmap/</code> 下。</p>
 <p><strong>直接扫全端口。</strong></p>
 <pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">-</span><span class="token class-name">A</span> <span class="token operator">-</span>p<span class="token operator">-</span> <span class="token operator">-</span>oA nmap<span class="token operator">/</span>tcp <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span></code></pre>
 <p><code>-A</code> == <code>-sC -sV -O -traceroute</code></p>
@@ -205,7 +205,7 @@ function sidebar_toggle() {
 对于每个端口，应该根据 <code>服务和对应版本</code>，搜寻是否有已公开的利用方式，搜寻的方式可以是：</p>
 <ul>
 <li><strong><a target="_blank" rel="noopener" href="http://www.google.com.hk">www.google.com.hk</a></strong></li>
-<li><code>searchsploit &#123;keyword&#125;</code> 关键字一般取漏洞描述，比如 <code>privilege</code> <code>samba</code>*</li>
+<li><code>searchsploit &#123;keyword&#125;</code> 关键字一般取漏洞描述，比如 <code>privilege</code> <code>samba</code></li>
 <li><strong>kali 中各种扫描器</strong>
 <ul>
 <li><code>nmap script: ll /usr/share/nmap/scripts/ | grep &#123;keyword&#125;</code> 关键字可以是 cve 也可以是 漏洞描述，比如 <code>cve</code> <code>samba</code></li>
@@ -217,7 +217,7 @@ function sidebar_toggle() {
 <p>这样比较准。因为搜索引擎的检索比较可以智能地匹配你的关键字，而且可能有现成的利用方式。kali 里就没这么智能，关键字不匹配则比较难搜出来，即使本来就集成的 exp。</p>
 <h4 id="！当然你也可以直接-searchexploit-nmap-msf-搜一大堆再挨个找。">！当然你也可以直接 <code>searchexploit / nmap / msf</code> 搜一大堆再挨个找。</h4>
 <p>看看说明，逐一筛选 <code>探测脚本</code> 或 <code>可用 exp</code>，能用的直接用，没找到的可以在 google 找下，可能已经公开 exp 但尚未集成 kali，这时候需要 <code>手工利用</code>。</p>
-<h4 id="！Google、Searchsploit、Nmap-MSF-三位一体漏洞库查找结果融合，总会有你想要的。">！Google、Searchsploit、Nmap/MSF 三位一体漏洞库查找结果融合，总会有你想要的。</h4>
+<h4 id="！Google、Searchsploit、Nmap-MSF-三位一体漏洞库搜索结果一起看，总会有你想要的。">！Google、Searchsploit、Nmap/MSF 三位一体漏洞库搜索结果一起看，总会有你想要的。</h4>
 <h3 id="1、Port-21">1、Port 21</h3>
 <p>google 一下发现 <code>vsftpd v2.3.4</code> 有公开 RCE，是开发哥写的后门，康康 <code>nmap</code> 有无脚本，路径在 <code>/usr/share/nmap/scripts/*</code>。</p>
 <pre class="language-java" data-language="java"><code class="language-java">ll <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>nmap<span class="token operator">/</span>scripts<span class="token operator">/</span>ftp<span class="token operator">*</span></code></pre>
