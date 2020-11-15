@@ -63,20 +63,23 @@ document.addEventListener('DOMContentLoaded', function () {
 <h1 id="写点啥儿">写点啥儿</h1>
 <h1 id="">-</h1>
 <h1 id="-v2">-</h1>
-<h1 id="OSCP-BATTLE">[ OSCP BATTLE ]</h1>
+<h1 id="OSCP-BATTLE"><strong>[ OSCP BATTLE ]</strong></h1>
 <ul>
-<li><a href="/oscp/At-The-Beginning">写在开始</a></li>
+<li><a href="/oscp/In-The-Beginning">In The Beginning</a></li>
 </ul>
 <h2 id="Prepration">Prepration</h2>
 <ul>
 <li><a href="/oscp/KALI-Deploy">KALI Deploy</a></li>
+<li><a href="/oscp/Training-Plan">Training Plan</a></li>
 </ul>
 <h2 id="Note">Note</h2>
 <ul>
 <li><a href="/oscp/Nmap-Tips">Nmap Tips</a></li>
+<li><a href="/oscp/Version-Compare">Version Compare</a></li>
+<li><a href="/oscp/Linux-Priv-Esc">Linux Priv Esc</a></li>
 </ul>
 <h1 id="-v3">-</h1>
-<h1 id="Hack-The-Box-Writeup">[ Hack The Box Writeup ]</h1>
+<h1 id="Hack-The-Box-Writeup"><strong>[ Hack The Box Writeup ]</strong></h1>
 <ul>
 <li><a href="/htb/HTB-Environment">HTB Environment</a></li>
 </ul>
@@ -84,13 +87,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <ul>
 <li><a href="/htb/htb-linux/Lame-Writeup">Lame Writeup</a></li>
 <li><a href="/htb/htb-linux/Shocker-Writeup">Shocker Writeup</a></li>
+<li><a href="/htb/htb-linux/Bashed-Writeup">Bashed Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
 <li><a href="/">nothing here</a></li>
 </ul>
 <h1 id="-v4">-</h1>
-<h1 id="Cyber-Security">[ Cyber Security ]</h1>
+<h1 id="Cyber-Security"><strong>[ Cyber Security ]</strong></h1>
 <h2 id="Skills">Skills</h2>
 <ul>
 <li><a href="/">skills</a></li>
@@ -100,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/">vuls</a></li>
 </ul>
 <h1 id="-v5">-</h1>
-<h1 id="Essay">[ Essay ]</h1>
+<h1 id="Essay"><strong>[ Essay ]</strong></h1>
 <ul>
 <li><a href="/">该做题了</a></li>
 </ul>
@@ -174,6 +178,11 @@ function sidebar_toggle() {
 </code></pre>
 <p>可以看到新增的 tun0 内网地址 <code>10.10.14.11</code>，即是实验室环境 ip。</p>
 <p><img src="./2.png" alt=""></p>
+<blockquote>
+<p><em><strong>常见异常</strong></em><br>
+<em>openvpn 断开后留下 tun0 接口，再次连接使用出现异常，以下命令删除多余的 tun0。</em><br>
+<em><code>ip link delete tun0</code></em></p>
+</blockquote>
 
 </div>
 

