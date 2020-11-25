@@ -11,7 +11,7 @@
 
     <title>
         
-          Linux Priv Esc - 阿毛毛の坑
+          Sense Writeup - 阿毛毛の坑
         
     </title>
 
@@ -173,28 +173,10 @@ function sidebar_toggle() {
         </div>
         <div class="book-content">
           <div class="book-post">
-  <h1 id="Linux-提权">Linux 提权</h1>
-<h3 id="Kernel-Vulns">Kernel Vulns</h3>
-<h3 id="sudo-l">sudo -l</h3>
-<h3 id="Crontab">Crontab</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> user.sh
-<span class="token builtin class-name">echo</span> <span class="token string">"user ALL=(root) NOPASSWD: ALL"</span> <span class="token operator">>></span> /etc/sudoers</code></pre>
-<p><code>/etc/crontab</code> 中加入计划任务。</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> /etc/crontab
-*/1 * * * * root <span class="token function">sh</span> /path2script/user.sh <span class="token operator">>></span> /tmp/log.txt</code></pre>
-<p>最后</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">su</span></code></pre>
-<h3 id="SUID">SUID</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">find</span> / -perm -1000 -type d <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null              <span class="token comment"># Sticky bit - Only the owner of the directory or the owner of a file can delete or rename here.</span>
-<span class="token function">find</span> / -perm -g<span class="token operator">=</span>s -type f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null               <span class="token comment"># 以文件所属用户组权限运行</span>
-<span class="token function">find</span> / -perm -u<span class="token operator">=</span>s -type f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null               <span class="token comment"># 以文件所属用户权限运行</span>
-<span class="token function">find</span> / -perm -g<span class="token operator">=</span>s -o -perm -u<span class="token operator">=</span>s -type f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null <span class="token comment"># 以上两者合集</span>
+  <h1 id="Sense-Writeup">Sense Writeup</h1>
+<p><img src="./0.png" alt=""></p>
+<h1 id=""></h1>
 
-<span class="token comment"># Looks in 'common' places: /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin and any other *bin, for SGID or SUID (Quicker search)</span>
-<span class="token keyword">for</span> <span class="token for-or-select variable">i</span> <span class="token keyword">in</span> <span class="token variable"><span class="token variable">`</span><span class="token function">locate</span> -r <span class="token string">"bin$"</span><span class="token variable">`</span></span><span class="token punctuation">;</span> <span class="token keyword">do</span> <span class="token function">find</span> <span class="token variable">$i</span> <span class="token punctuation">\</span><span class="token punctuation">(</span> -perm -4000 -o -perm -2000 <span class="token punctuation">\</span><span class="token punctuation">)</span> -type f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span class="token punctuation">;</span> <span class="token keyword">done</span>   
-
-<span class="token comment"># find starting at root (/), SGID or SUID, not Symbolic links, only 3 folders deep, list with more detail and hide any errors (e.g. permission denied)</span>
-<span class="token function">find</span> / -perm -g<span class="token operator">=</span>s -o -perm -4000 <span class="token operator">!</span> -type l -maxdepth <span class="token number">3</span> -exec <span class="token function">ls</span> -ld <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span> <span class="token punctuation">\</span><span class="token punctuation">;</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null   </code></pre>
 </div>
 
 
@@ -231,7 +213,7 @@ function sidebar_toggle() {
     <!-- Author title -->
     <div class="author-title">
       <div>amm907</div>
-      <div>2020-11-14</div>
+      <div>2020-11-23</div>
     </div>
   </div>
 
@@ -239,7 +221,7 @@ function sidebar_toggle() {
     <div class="divider"></div>
 
     <div class="link">
-      <a class="category-link" href="/categories/OSCP/">OSCP</a>
+      <a class="category-link" href="/categories/Hack-The-Box/">Hack The Box</a>
 
       
     </div>

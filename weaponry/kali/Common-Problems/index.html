@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <ul>
 <li><a href="/weaponry/kali/KALI-Deploy">KALI Deploy</a></li>
 <li><a href="/weaponry/kali/Common-Problems">Common Problems</a></li>
+<li><a href="/weaponry/commands/Reverse-Shell">Reverse Shell</a></li>
 </ul>
 <h1 id="-v2">-</h1>
 <h1 id="OSCP-BATTLE"><strong>[ OSCP BATTLE ]</strong></h1>
@@ -94,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/htb/htb-linux/Bashed-Writeup">Bashed Writeup</a></li>
 <li><a href="/htb/htb-linux/Beep-Writeup">Beep Writeup</a></li>
 <li><a href="/htb/htb-linux/Nibbles-Writeup">Nibbles Writeup</a></li>
+<li><a href="/htb/htb-linux/Sense-Writeup">Sense Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
@@ -189,7 +191,15 @@ system_default <span class="token operator">=</span> system_default_sect
 
 <span class="token punctuation">[</span>system_default_sect<span class="token punctuation">]</span>
 CipherString <span class="token operator">=</span> DEFAULT@SECLEVEL<span class="token operator">=</span><span class="token number">1</span></code></pre>
-
+<h4 id="KALI-VMWare-迷之断网，右上角显示设备未托管">KALI.VMWare 迷之断网，右上角显示设备未托管</h4>
+<p><code>ifconfig -a</code> 看到网卡还在，只是罢工了。</p>
+<p><img src="./1.png" alt=""><br>
+修改配置，加入这两行，重启。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> /etc/network/interfaces
+auto eth0
+iface eth0 inet dhcp
+<span class="token comment"># 重启</span>
+systemctl restart networking</code></pre>
 </div>
 
 

