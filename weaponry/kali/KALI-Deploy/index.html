@@ -60,7 +60,9 @@ document.addEventListener('DOMContentLoaded', function () {
     <div id="menu" class="book-menu hide">
   <h1 id="Initialized-on">Initialized on</h1>
 <h1 id="November-4-2020">November 4, 2020</h1>
-<h1 id="写点啥儿">写点啥儿</h1>
+<ul>
+<li><a href="/Changelog">Changelog</a></li>
+</ul>
 <h1 id="">-</h1>
 <h1 id="WEAPONRY"><strong>[ WEAPONRY ]</strong></h1>
 <ul>
@@ -78,6 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <h2 id="Prepration">Prepration</h2>
 <ul>
 <li><a href="/oscp/Training-Plan">Training Plan</a></li>
+<li><a href="/oscp/Learning-Plan">Learning Plan</a></li>
+<li><a href="/oscp/Resources">Resources</a></li>
 </ul>
 <h2 id="Note">Note</h2>
 <ul>
@@ -97,6 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/htb/htb-linux/Beep-Writeup">Beep Writeup</a></li>
 <li><a href="/htb/htb-linux/Nibbles-Writeup">Nibbles Writeup</a></li>
 <li><a href="/htb/htb-linux/Sense-Writeup">Sense Writeup</a></li>
+<li><a href="/htb/htb-linux/Valentine-Writeup">Valentine Writeup</a></li>
+<li><a href="/htb/htb-linux/Irked-Writeup">Irked Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
@@ -178,7 +184,8 @@ function sidebar_toggle() {
 <p>自然是选择 KALI 作为工具系统，初始化的配置较为繁琐，这里例举一下常用的配置，最后整理个（尽量）一键脚本。</p>
 <h2 id="这里讲下-KALI-安装时基础配置，持续更新">这里讲下 KALI 安装时基础配置，持续更新</h2>
 <h3 id="apt-源相关">apt 源相关</h3>
-<p>。</p>
+<h4 id="包管理工具">包管理工具</h4>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">apt-get</span> <span class="token function">install</span> <span class="token function">aptitude</span> </code></pre>
 <h3 id="安全工具">安全工具</h3>
 <h4 id="MSF">MSF</h4>
 <p>自带 <code>MSF5</code>，我们要升级成 <code>MSF6</code>。<br>
@@ -187,10 +194,33 @@ function sidebar_toggle() {
 <p><strong>遇事不决就重装，问题解决。</strong></p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">apt</span> remove metasploit-framework
 <span class="token function">curl</span> https://raw.githubusercontent.com:443/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb <span class="token operator">></span> msfinstall <span class="token operator">&amp;&amp;</span> <span class="token function">chmod</span> <span class="token number">755</span> msfinstall <span class="token operator">&amp;&amp;</span> ./msfinstall</code></pre>
+<h4 id="Gobuster">Gobuster</h4>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">apt-get</span> <span class="token function">install</span> -y gobuster</code></pre>
+<h4 id="脚本配置">脚本配置</h4>
+<p><strong>预装了 python2/3、pip3 但没有 pip2。</strong></p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> https://bootstrap.pypa.io/2.6/get-pip.py
+python2 get-pip.py
+pip -V
+pip <span class="token function">install</span> --upgrade pip</code></pre>
+<p><img src="./2.png" alt=""></p>
+<p><strong>组件安装</strong></p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> paramiko</code></pre>
+<blockquote>
+<p><strong>难搞的 pwntools，目前安装报错</strong></p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> -U setuptools
+pip <span class="token function">install</span> <span class="token assign-left variable">cryptography</span><span class="token operator">==</span><span class="token number">2.5</span>                               <span class="token comment"># 2.5 适配当时安装的版本，按理说越高越好</span>
+pip <span class="token function">install</span> pwntools                                        <span class="token comment"># 报错</span>
+pip <span class="token function">install</span> pwntools -i https://www.piwheels.org/simple/    <span class="token comment"># 报错</span></code></pre>
+</blockquote>
 <h4 id="信息收集相关">信息收集相关</h4>
 <p>apt install seclists curl enum4linux gobuster nbtscan nikto nmapomesixtyone oscanner smbclient smbmap smtp-user-enum snmp sslscan sipvicious tnscmd10g whatweb wkhtmltopdf</p>
+<h4 id="需要解压的文件">需要解压的文件</h4>
+<p>gzip -d /usr/share/wordlist/rockyou.txt.gz</p>
 <h3 id="辅助工具">辅助工具</h3>
-<p>。</p>
+<h4 id="Docker">Docker</h4>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> -sSL https://get.daocloud.io/docker <span class="token operator">|</span> <span class="token function">sh</span>                           <span class="token comment"># 国内 daocloud</span>
+<span class="token function">curl</span> -fsSL https://get.docker.com <span class="token operator">|</span> <span class="token function">bash</span> -s docker --mirror Aliyun      <span class="token comment"># 官方</span>
+<span class="token function">curl</span> -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet <span class="token operator">|</span> <span class="token function">sh</span> -   <span class="token comment"># 阿里云</span></code></pre>
 <h3 id="杂七杂八的配置">杂七杂八的配置</h3>
 <h4 id="终端外观">终端外观</h4>
 <p>直接在终端选项是改不了的，因为终端正在打开，改完了还会被覆盖，应该<code>关闭终端，修改配置文件</code>。</p>

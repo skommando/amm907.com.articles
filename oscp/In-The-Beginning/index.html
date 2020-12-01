@@ -60,7 +60,9 @@ document.addEventListener('DOMContentLoaded', function () {
     <div id="menu" class="book-menu hide">
   <h1 id="Initialized-on">Initialized on</h1>
 <h1 id="November-4-2020">November 4, 2020</h1>
-<h1 id="写点啥儿">写点啥儿</h1>
+<ul>
+<li><a href="/Changelog">Changelog</a></li>
+</ul>
 <h1 id="">-</h1>
 <h1 id="WEAPONRY"><strong>[ WEAPONRY ]</strong></h1>
 <ul>
@@ -78,6 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <h2 id="Prepration">Prepration</h2>
 <ul>
 <li><a href="/oscp/Training-Plan">Training Plan</a></li>
+<li><a href="/oscp/Learning-Plan">Learning Plan</a></li>
+<li><a href="/oscp/Resources">Resources</a></li>
 </ul>
 <h2 id="Note">Note</h2>
 <ul>
@@ -97,6 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/htb/htb-linux/Beep-Writeup">Beep Writeup</a></li>
 <li><a href="/htb/htb-linux/Nibbles-Writeup">Nibbles Writeup</a></li>
 <li><a href="/htb/htb-linux/Sense-Writeup">Sense Writeup</a></li>
+<li><a href="/htb/htb-linux/Valentine-Writeup">Valentine Writeup</a></li>
+<li><a href="/htb/htb-linux/Irked-Writeup">Irked Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
@@ -192,7 +198,8 @@ function sidebar_toggle() {
 <p>解题思路大多按照这个章节架构进行。</p>
 <ol>
 <li><strong>信息收集</strong>：前期需要收集的信息，如服务器开放端口等</li>
-<li><strong>漏洞利用</strong>：根据靶机暴露的服务逐一挖掘漏洞，并 getshell 获得立足点</li>
+<li><strong>漏洞枚举</strong>：根据靶机暴露的服务逐一枚举、定位漏洞</li>
+<li><strong>Getshell</strong>：利用收集的信息和漏洞组合利用 getshell，获得基本立足点</li>
 <li><strong>提权</strong>：只拿到普通权限时的提权操作</li>
 <li><strong>攻击节点</strong>：理一下解题的关键节点</li>
 <li><strong>学到什么</strong>：当前题目的经验总结</li>

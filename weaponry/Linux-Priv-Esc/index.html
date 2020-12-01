@@ -60,7 +60,9 @@ document.addEventListener('DOMContentLoaded', function () {
     <div id="menu" class="book-menu hide">
   <h1 id="Initialized-on">Initialized on</h1>
 <h1 id="November-4-2020">November 4, 2020</h1>
-<h1 id="写点啥儿">写点啥儿</h1>
+<ul>
+<li><a href="/Changelog">Changelog</a></li>
+</ul>
 <h1 id="">-</h1>
 <h1 id="WEAPONRY"><strong>[ WEAPONRY ]</strong></h1>
 <ul>
@@ -78,6 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <h2 id="Prepration">Prepration</h2>
 <ul>
 <li><a href="/oscp/Training-Plan">Training Plan</a></li>
+<li><a href="/oscp/Learning-Plan">Learning Plan</a></li>
+<li><a href="/oscp/Resources">Resources</a></li>
 </ul>
 <h2 id="Note">Note</h2>
 <ul>
@@ -97,6 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/htb/htb-linux/Beep-Writeup">Beep Writeup</a></li>
 <li><a href="/htb/htb-linux/Nibbles-Writeup">Nibbles Writeup</a></li>
 <li><a href="/htb/htb-linux/Sense-Writeup">Sense Writeup</a></li>
+<li><a href="/htb/htb-linux/Valentine-Writeup">Valentine Writeup</a></li>
+<li><a href="/htb/htb-linux/Irked-Writeup">Irked Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
@@ -189,6 +195,10 @@ function sidebar_toggle() {
 <span class="token function">cat</span> ~/.php_history</code></pre>
 <h2 id="Kernel-Vulns">Kernel Vulns</h2>
 <h2 id="配置不当">配置不当</h2>
+<h3 id="系统服务的错误权限配置漏洞">系统服务的错误权限配置漏洞</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> /var/apache2/config.inc
+<span class="token function">cat</span> /var/lib/mysql/mysql/user.MYD
+<span class="token function">cat</span> /root/anaconda-ks.cfg</code></pre>
 <h3 id="sudo-l">sudo -l</h3>
 <h3 id="Crontab">Crontab</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> user.sh
@@ -216,6 +226,8 @@ function sidebar_toggle() {
 <span class="token function">find</span> / -perm -g<span class="token operator">=</span>s -type f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null               <span class="token comment"># 以文件所属用户组权限运行</span>
 <span class="token function">find</span> / -perm -u<span class="token operator">=</span>s -type f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null               <span class="token comment"># 以文件所属用户权限运行</span>
 <span class="token function">find</span> / -perm -g<span class="token operator">=</span>s -o -perm -u<span class="token operator">=</span>s -type f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null <span class="token comment"># 以上两者合集</span>
+<span class="token function">find</span> / -user root -perm -4000 -print <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null    <span class="token comment"># 先收集，待确认</span>
+<span class="token function">find</span> / -user root -perm -4000 -exec <span class="token function">ls</span> -ldb <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span> <span class="token punctuation">\</span>    <span class="token comment"># 先收集，待确认</span>
 
 <span class="token comment"># Looks in 'common' places: /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin and any other *bin, for SGID or SUID (Quicker search)</span>
 <span class="token keyword">for</span> <span class="token for-or-select variable">i</span> <span class="token keyword">in</span> <span class="token variable"><span class="token variable">`</span><span class="token function">locate</span> -r <span class="token string">"bin$"</span><span class="token variable">`</span></span><span class="token punctuation">;</span> <span class="token keyword">do</span> <span class="token function">find</span> <span class="token variable">$i</span> <span class="token punctuation">\</span><span class="token punctuation">(</span> -perm -4000 -o -perm -2000 <span class="token punctuation">\</span><span class="token punctuation">)</span> -type f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span class="token punctuation">;</span> <span class="token keyword">done</span>   
@@ -224,7 +236,7 @@ function sidebar_toggle() {
 <span class="token function">find</span> / -perm -g<span class="token operator">=</span>s -o -perm -4000 <span class="token operator">!</span> -type l -maxdepth <span class="token number">3</span> -exec <span class="token function">ls</span> -ld <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span> <span class="token punctuation">\</span><span class="token punctuation">;</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null   </code></pre>
 <h2 id="Third-Part-Service">Third Part Service</h2>
 <h3 id="Root-Redis-未授权访问">Root-Redis 未授权访问</h3>
-<p>任意角色未授权登入，<a target="_blank" rel="noopener" href="https://github.com/Xyntax/POC-T/blob/9d538a217cb480dbd1f94f1fa6c8154a41b5b106/script/redis-sshkey-getshell.py">公钥写入</a>。</p>
+<p>任意角色未授权登录，公钥写入。<a target="_blank" rel="noopener" href="https://github.com/Xyntax/POC-T/blob/9d538a217cb480dbd1f94f1fa6c8154a41b5b106/script/redis-sshkey-getshell.py">redis-sshkey-getshell.py</a></p>
 
 </div>
 

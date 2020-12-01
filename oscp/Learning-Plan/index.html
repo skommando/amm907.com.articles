@@ -11,7 +11,7 @@
 
     <title>
         
-          Nmap Tips - 阿毛毛の坑
+          Learning Plan - 阿毛毛の坑
         
     </title>
 
@@ -180,39 +180,29 @@ function sidebar_toggle() {
         </div>
         <div class="book-content">
           <div class="book-post">
-  <h1 id="记录一下-nmap-技巧">记录一下 nmap 技巧</h1>
-<p><code>nmap</code> 常用参数无非就那几个，但是在不同场景下，综合扫描速度和探测目标，用不同的参数组合应对。</p>
-<h2 id="0x01-参数和结果">0x01 参数和结果</h2>
-<h3 id="1、一些参数的结果比较">1、一些参数的结果比较</h3>
-<p>在扫描参数中 <code>-A</code> == <code>-sC -sV -O -traceroute</code>，代表 <strong>脚本扫描、服务探测、系统探测、路由追踪</strong>。</p>
-<ul>
-<li>左边：<code>-sC -sV -O</code></li>
-<li>右边：<code>-A</code></li>
-</ul>
-<p><img src="./1.png" alt=""></p>
-<p>预期 <code>-A</code> 只会多出 1~2 个路由追踪的结果，有时候不一定，比如上面右边多出了 5 个结果：</p>
-<ul>
-<li><strong>Device type</strong>: 设备类型枚举</li>
-<li><strong>Running (JUST GUESSING)</strong>: 目标操作系统枚举</li>
-<li><strong>OS CPE</strong>: 通用平台枚举项（Common Platform Enumeration），对识别出的软件、硬件和操作系统的一种命名方式</li>
-<li><strong>Network Distance</strong>: 与目标间的网络距离，单位是<code>跳</code></li>
-<li><strong>TRACEROUTE</strong>: 到达目标的路由跟踪</li>
-</ul>
+  <h1 id="学习计划">学习计划</h1>
 <ol>
-<li>其中 <code>Device type</code>、<code>Running</code>、<code>OS CPE</code> 属于 <code>-O</code> 参数的输出，即 <code>操作系统探测</code>，有时候这三个结果不会出现，出现的原因我理解是由于扫描不精确导致输出一些枚举项。</li>
-<li><code>Network Distance</code>、<code>TRACEROUTE</code> 属于 <code>-traceroute</code> 参数的输出。</li>
+<li>Linux 熟练使用<br>
+应该用不着熟练吧。。。<br>
+练习常用命令：<a target="_blank" rel="noopener" href="http://linuxcommand.org/">http://linuxcommand.org/</a><br>
+游戏式练习：<a target="_blank" rel="noopener" href="http://overthewire.org/wargames/">http://overthewire.org/wargames/</a></li>
+<li>会一门编程语言<br>
+PYTHON YES!<br>
+有个课程先存一下，可能要收费：<a target="_blank" rel="noopener" href="http://www.pentesteracademy.com/course?id=1">http://www.pentesteracademy.com/course?id=1</a></li>
+<li>MSF 熟练使用<br>
+考试中只能用在一台，毕竟考试注重手工渗透，而 msf 注重使用方便和效率提高。<br>
+做靶机、oscplab 的时候会用作练习，先手工渗透再 msf 实践。<br>
+OSCP 的参考材料：<a target="_blank" rel="noopener" href="https://www.offensive-security.com/metasploit-unleashed/">https://www.offensive-security.com/metasploit-unleashed/</a></li>
+<li>linux 的机器<br>
+目前还行，正常做靶机练练即可。</li>
+<li>Windows 的机器<br>
+需要恶补。</li>
+<li>缓冲区溢出<br>
+在考试中只有一台，要是要花时间学习准备，不仅仅为了应付考试。<br>
+需要学习。<br>
+简单介绍：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=1S0aBV-Waeo">https://www.youtube.com/watch?v=1S0aBV-Waeo</a><br>
+更多材料：<a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCV61whKVQpEmHVgFd_-Y7kQ/feed">https://www.youtube.com/channel/UCV61whKVQpEmHVgFd_-Y7kQ/feed</a></li>
 </ol>
-<h2 id="0x02-扫描速度">0x02 扫描速度</h2>
-<p>做了一下样本不多的扫描速度比较。</p>
-<h3 id="1、不带参数-vs-A">1、不带参数 vs -A</h3>
-<p>同样的环境下执行，扫描靶机全端口，已知只有 5 个开放端口。</p>
-<pre class="language-java" data-language="java"><code class="language-java">nmap <span class="token operator">-</span>p<span class="token operator">-</span> <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span>
-nmap <span class="token operator">-</span><span class="token class-name">A</span> <span class="token operator">-</span>p<span class="token operator">-</span> <span class="token number">10.10</span><span class="token number">.10</span><span class="token number">.3</span></code></pre>
-<p>执行时间：<code>306.66</code> vs <code>399.79</code><br>
-初步判断，后者多出来的时间是花在服务检测上面，对经过探测未开放的端口不会做服务检测。<br>
-所以 <strong>先扫开放再扫服务</strong> 并不会比 <strong>直接扫服务</strong> 要快。</p>
-<p><code>扫 UDP 的时候非常慢，还没对比过，可能这个靶机的 vpn 不行。</code></p>
-<h4 id="结论就是对于单台服务器的端口扫描，直接-nmap-A-p-IP-就好。">结论就是对于单台服务器的端口扫描，直接 <code>nmap -A -p- IP</code> 就好。</h4>
 
 </div>
 
@@ -250,7 +240,7 @@ nmap <span class="token operator">-</span><span class="token class-name">A</span
     <!-- Author title -->
     <div class="author-title">
       <div>amm907</div>
-      <div>2020-11-07</div>
+      <div>2020-11-26</div>
     </div>
   </div>
 
