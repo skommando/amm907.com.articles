@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/htb/htb-linux/Sense-Writeup">Sense Writeup</a></li>
 <li><a href="/htb/htb-linux/Valentine-Writeup">Valentine Writeup</a></li>
 <li><a href="/htb/htb-linux/Irked-Writeup">Irked Writeup</a></li>
+<li><a href="/htb/htb-linux/FriendZone-Writeup">FriendZone Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
@@ -184,7 +185,7 @@ function sidebar_toggle() {
 <p><img src="./0.png" alt=""></p>
 <h2 id="0x01-信息收集">0x01 信息收集</h2>
 <p><img src="./1.png" alt=""></p>
-<h2 id="0x02-漏洞利用">0x02 漏洞利用</h2>
+<h2 id="0x02-枚举">0x02 枚举</h2>
 <h3 id="1、Port-22">1、Port 22</h3>
 <p>存在 SFTP 溢出 RCE，需要登录凭证，用户名，或者私钥。<br>
 当 ssh 仅允许 sftp 时，借助此漏洞可使用 ssh 来访问系统（执行命令）。</p>
@@ -197,10 +198,11 @@ function sidebar_toggle() {
 <p>私钥应该可以直接用 ssh 连接，但是当前密码不正确，且不知道 <code>用户名</code>。</p>
 <p>Apache httpd 2.2.22 存在 cgi-bin RCE。<br>
 路径 404？可能需要一个具体的脚本 uri，但是目前 cgi-bin 目录下没扫到脚本文件。</p>
-<h2 id="0x03-Getshell">0x03 Getshell</h2>
+<h2 id="0x03-立足点">0x03 立足点</h2>
 <h2 id="0x04-提权">0x04 提权</h2>
 <h2 id="0x05-攻击节点">0x05 攻击节点</h2>
 <h2 id="0x06-学到什么">0x06 学到什么</h2>
+<h4 id="1、理解漏洞的基本用途。">1、理解漏洞的基本用途。</h4>
 
 </div>
 
