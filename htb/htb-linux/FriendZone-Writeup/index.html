@@ -321,7 +321,7 @@ vpn.friendzoneportal.red        <span class="token comment"># 404</span></code><
 <blockquote>
 <p>当存在文件包含时，往往只能看见执行后的文件，如果能知道脚本里写了什么，是不是就能很快判定这里上传逻辑了呢。<br>
 那么要怎么获得执行前的脚本文件？据说有这么个姿势，会返回相应页面的 base64，解码可得页面内容。</p>
-<pre class="language-text" data-language="text"><code class="language-text">https:&#x2F;&#x2F;administrator1.friendzone.red&#x2F;dashboard.php?image_id&#x3D;a.jpg&amp;pagename&#x3D;php:&#x2F;&#x2F;filter&#x2F;covert.base64-encode&#x2F;resource&#x3D;php:&#x2F;&#x2F;filter&#x2F;covert.base64-encode&#x2F;resource&#x3D;login</code></pre>
+<pre class="language-text" data-language="text"><code class="language-text">https:&#x2F;&#x2F;administrator1.friendzone.red&#x2F;dashboard.php?image_id&#x3D;a.jpg&amp;pagename&#x3D;php:&#x2F;&#x2F;filter&#x2F;covert.base64-encode&#x2F;resource&#x3D;login</code></pre>
 <p>但是实操无效，原因未知。</p>
 </blockquote>
 <p>假设这里没有上传成功怎么办，是否还有其他上传点？那几个域名再检查了一遍均无果，最后想到 <strong>smb 还有一个可写文件夹</strong>。</p>
