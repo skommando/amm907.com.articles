@@ -206,11 +206,17 @@ function sidebar_toggle() {
 <p><strong>预装了 python2/3、pip3 但没有 pip2。</strong></p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> https://bootstrap.pypa.io/2.6/get-pip.py
 python2 get-pip.py
-pip -V
-pip <span class="token function">install</span> --upgrade pip</code></pre>
+pip2 -V
+pip2 <span class="token function">install</span> --upgrade pip
+<span class="token comment"># 替换原 pip(3)</span>
+<span class="token function">mv</span> /usr/local/bin/pip /usr/local/bin/pip.bk
+<span class="token function">ln</span> -s /usr/local/bin/pip2 /usr/local/bin/pip</code></pre>
 <p><img src="./2.png" alt=""></p>
 <p><strong>组件安装</strong></p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> paramiko</code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># pip2</span>
+pip <span class="token function">install</span> paramiko requests
+<span class="token comment"># pip3</span>
+pip <span class="token function">install</span> paramiko</code></pre>
 <blockquote>
 <p><strong>难搞的 pwntools，目前安装报错</strong></p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> -U setuptools
