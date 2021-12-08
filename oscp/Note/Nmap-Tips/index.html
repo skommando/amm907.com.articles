@@ -90,8 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
 </ul>
 <h2 id="Note">Note</h2>
 <ul>
-<li><a href="/oscp/Nmap-Tips">Nmap Tips</a></li>
-<li><a href="/oscp/Version-Compare">Version Compare</a></li>
+<li><a href="/oscp/Note/Nmap-Tips">Nmap Tips</a></li>
+<li><a href="/oscp/Note/Version-Compare">Version Compare</a></li>
 </ul>
 <h1 id="-v3">-</h1>
 <h1 id="Hack-The-Box-Writeup"><strong>[ Hack The Box Writeup ]</strong></h1>
@@ -100,16 +100,16 @@ document.addEventListener('DOMContentLoaded', function () {
 </ul>
 <h2 id="HTB-Linux">HTB Linux</h2>
 <ul>
-<li><a href="/htb/htb-linux/Lame-Writeup">Lame Writeup</a></li>
-<li><a href="/htb/htb-linux/Shocker-Writeup">Shocker Writeup</a></li>
-<li><a href="/htb/htb-linux/Bashed-Writeup">Bashed Writeup</a></li>
-<li><a href="/htb/htb-linux/Beep-Writeup">Beep Writeup</a></li>
-<li><a href="/htb/htb-linux/Nibbles-Writeup">Nibbles Writeup</a></li>
-<li><a href="/htb/htb-linux/Sense-Writeup">Sense Writeup</a></li>
-<li><a href="/htb/htb-linux/Valentine-Writeup">Valentine Writeup</a></li>
-<li><a href="/htb/htb-linux/Irked-Writeup">Irked Writeup</a></li>
-<li><a href="/htb/htb-linux/FriendZone-Writeup">FriendZone Writeup</a></li>
-<li><a href="/htb/htb-linux/Swagshop-Writeup">Swagshop Writeup</a></li>
+<li><a href="/htb/HTB-Linux/Lame-Writeup">Lame Writeup</a></li>
+<li><a href="/htb/HTB-Linux/Shocker-Writeup">Shocker Writeup</a></li>
+<li><a href="/htb/HTB-Linux/Bashed-Writeup">Bashed Writeup</a></li>
+<li><a href="/htb/HTB-Linux/Beep-Writeup">Beep Writeup</a></li>
+<li><a href="/htb/HTB-Linux/Nibbles-Writeup">Nibbles Writeup</a></li>
+<li><a href="/htb/HTB-Linux/Sense-Writeup">Sense Writeup</a></li>
+<li><a href="/htb/HTB-Linux/Valentine-Writeup">Valentine Writeup</a></li>
+<li><a href="/htb/HTB-Linux/Irked-Writeup">Irked Writeup</a></li>
+<li><a href="/htb/HTB-Linux/FriendZone-Writeup">FriendZone Writeup</a></li>
+<li><a href="/htb/HTB-Linux/Swagshop-Writeup">Swagshop Writeup</a></li>
 </ul>
 <h2 id="HTB-Windows">HTB Windows</h2>
 <ul>
@@ -220,7 +220,15 @@ nmap <span class="token operator">-</span><span class="token class-name">A</span
 所以 <strong>先扫开放再扫服务</strong> 并不会比 <strong>直接扫服务</strong> 要快。</p>
 <p><code>扫 UDP 的时候非常慢，还没对比过，可能这个靶机的 vpn 不行。</code></p>
 <h4 id="结论就是对于单台服务器的端口扫描，直接-nmap-A-p-IP-就好。">结论就是对于单台服务器的端口扫描，直接 <code>nmap -A -p- IP</code> 就好。</h4>
-
+<h2 id="0x03-最大重试次数-max-retries">0x03 最大重试次数 --max-retries</h2>
+<p>默认扫描中，每个端口的扫描会发出不止一次请求，具体多少不知道。<br>
+当要 <code>加速扫描</code>、或者 <code>执行某些特定的对端口的序列请求</code> 的时候（比如 <code>knock knock</code> 按顺序请求端口开启防火墙），就要修改这个参数。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 比如为了加速，设置为1</span>
+nmap -A -p- -oA xx.nmap <span class="token number">10.10</span>.10.3 --man-retries <span class="token number">1</span></code></pre>
+<h2 id="0x04-报告模板-stylesheet">0x04 报告模板 --stylesheet</h2>
+<p>可以加载酷炫的输出模板。<br>
+<a target="_blank" rel="noopener" href="https://github.com/honze-net/nmap-bootstrap-xsl">https://github.com/honze-net/nmap-bootstrap-xsl</a></p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">nmap -A -p- -oA xx.nmap --stylesheet tools/nmap-bootstrap.xsl <span class="token number">10.10</span>.10.3</code></pre>
 </div>
 
 
