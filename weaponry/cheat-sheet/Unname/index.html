@@ -192,7 +192,7 @@ function sidebar_toggle() {
 <h3 id="vim">vim</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 替换文本</span>
 %s/<span class="token punctuation">&#123;</span>old<span class="token punctuation">&#125;</span>/<span class="token punctuation">&#123;</span>new<span class="token punctuation">&#125;</span>/g</code></pre>
-<h3 id="unk">unk</h3>
+<h3 id="IFS">IFS</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 间隔符的运用</span>
 <span class="token assign-left variable"><span class="token environment constant">IFS</span></span><span class="token operator">=</span><span class="token punctuation">&#123;</span>xx<span class="token punctuation">&#125;</span>
 TODO</code></pre>
@@ -200,8 +200,7 @@ TODO</code></pre>
 <h3 id="pty">pty</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash">python -c <span class="token string">'import pty;pty.spawn("/bin/bash")'</span>
 ctrl+z
-stty xxx -echo
-<span class="token function">nc</span> -lvvp xx</code></pre>
+stty xxx -echo<span class="token punctuation">;</span><span class="token function">fg</span></code></pre>
 <h2 id="0x03-命令执行">0x03 命令执行</h2>
 <h3 id="命令执行-姿势拓展">命令执行 姿势拓展</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 如果不能反弹 shell，别忘了 setuid</span>

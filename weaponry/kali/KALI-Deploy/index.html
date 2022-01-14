@@ -190,15 +190,22 @@ function sidebar_toggle() {
   <h1 id="KALI-Deploy">KALI Deploy</h1>
 <p>自然是选择 KALI 作为工具系统，初始化的配置较为繁琐，这里例举一下常用的配置，最后整理个（尽量）一键脚本。</p>
 <h2 id="这里讲下-KALI-安装时基础配置，持续更新">这里讲下 KALI 安装时基础配置，持续更新</h2>
-<h3 id="刚装好上不了网，手动添加网卡">刚装好上不了网，手动添加网卡</h3>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> /etc/network/interfaces</code></pre>
+<h3 id="KALI-刚装好上不了网，手动添加网卡">KALI 刚装好上不了网，手动添加网卡</h3>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> /etc/network/interfaces
+<span class="token comment"># 因为用 NAT 模式，需要设置 dhcp 让动态设置 ip</span>
+auto eth0
+iface eth0 inet dhcp
+<span class="token comment"># 重启网络</span>
+/etc/init.d/networking restart <span class="token operator">&amp;&amp;</span> <span class="token function">ip</span> a</code></pre>
 <h3 id="apt-源相关">apt 源相关</h3>
 <h4 id="国内源">国内源</h4>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> /etc/apt/sources.list
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># deb 是针对二进制软件包的，可以使用 apt 进行安装。</span>
+<span class="token comment"># deb-src 则针对源代码包（由下载apt-get source $package），然后进行编译。</span>
+<span class="token comment"># 如果自己编译某些软件包或检查源代码中是否有错误时，才需要源软件包。一般用户不需要包含此类存储库。</span>
+<span class="token comment"># 中科大 和 阿里云 kali 源</span>
 apt-key adv --recv ED444FF07D8D0BF6
 <span class="token builtin class-name">echo</span> <span class="token string">"deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib"</span> <span class="token operator">>></span> /etc/apt/sources.list
-<span class="token builtin class-name">echo</span> <span class="token string">"deb http://mirrors.aliyun.com/debian stable main contrib non-free"</span>  <span class="token operator">>></span> /etc/apt/sources.list
-</code></pre>
+<span class="token builtin class-name">echo</span> <span class="token string">"deb http://mirrors.aliyun.com/kali kali-rolling main non-free contrib"</span>  <span class="token operator">>></span> /etc/apt/sources.list</code></pre>
 <h4 id="包管理工具">包管理工具</h4>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">apt-get</span> <span class="token function">install</span> <span class="token function">aptitude</span> </code></pre>
 <h3 id="安全工具">安全工具</h3>
@@ -273,11 +280,11 @@ fontSize<span class="token operator">=</span><span class="token number">11</span
 <span class="token builtin class-name">read</span> -p <span class="token string">"[*] 请按任意键继续...."</span>
 
 
-<span class="token builtin class-name">echo</span> <span class="token string">"[+] 添加kali源"</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"[+] 添加 kali 源"</span>
 apt-key adv --recv ED444FF07D8D0BF6
 <span class="token builtin class-name">echo</span> <span class="token string">"deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib"</span> <span class="token operator">>></span> /etc/apt/sources.list
 <span class="token builtin class-name">echo</span> <span class="token string">"deb http://mirrors.aliyun.com/debian stable main contrib non-free"</span>  <span class="token operator">>></span> /etc/apt/sources.list
-<span class="token builtin class-name">echo</span> <span class="token string">"[ok] 添加kali源成功！"</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"[ok] 添加 kali 源成功！"</span>
 <span class="token builtin class-name">echo</span> <span class="token string">""</span>
 
 <span class="token builtin class-name">echo</span> <span class="token string">"[+] 添加一个普通用户"</span>
