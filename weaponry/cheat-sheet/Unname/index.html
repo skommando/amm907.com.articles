@@ -200,7 +200,7 @@ TODO</code></pre>
 <h3 id="pty">pty</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash">python -c <span class="token string">'import pty;pty.spawn("/bin/bash")'</span>
 ctrl+z
-stty xxx -echo<span class="token punctuation">;</span><span class="token function">fg</span></code></pre>
+stty raw -echo<span class="token punctuation">;</span><span class="token function">fg</span></code></pre>
 <h2 id="0x03-命令执行">0x03 命令执行</h2>
 <h3 id="命令执行-姿势拓展">命令执行 姿势拓展</h3>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 如果不能反弹 shell，别忘了 setuid</span>
